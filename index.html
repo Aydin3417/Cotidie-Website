@@ -1025,13 +1025,7 @@ let swipeDeck = [];
 let swipeIdx = 0;
 
 function renderSwipe() {
-    const store = getStore();
-    // Filter out already-swiped logos for this user
-    swipeDeck = shuffle(LOGOS.filter(l => {
-        const sd = store.swipes?.[l.id];
-        if (!sd) return true;
-        return !sd.right.includes(currentUser) && !sd.left.includes(currentUser);
-    }));
+    swipeDeck = shuffle([...LOGOS]);
     swipeIdx = 0;
     renderSwipeCard();
 }
