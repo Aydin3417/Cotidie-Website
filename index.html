@@ -711,6 +711,7 @@
     <div class="nav-tabs" id="navTabs">
         <button class="nav-tab active" data-page="gallery">Galeri</button>
         <button class="nav-tab" data-page="swipe">🔥 Swipe</button>
+        <button class="nav-tab" data-page="swipeStats">📊 Swipe Sonuçları</button>
         <button class="nav-tab" data-page="tournament">Turnuva</button>
         <button class="nav-tab" data-page="stats">İstatistikler</button>
         <button class="nav-tab" data-page="leaderboard">🏆 Sıralama</button>
@@ -755,6 +756,14 @@
     <!-- SWIPE PAGE -->
     <div class="page" id="swipePage">
         <div id="swipeContent"></div>
+    </div>
+
+    <!-- SWIPE STATS PAGE -->
+    <div class="page" id="swipeStatsPage">
+        <div class="section-title-bar">
+            <h2>📊 Swipe <em>Sonuçları</em></h2>
+        </div>
+        <div id="swipeStatsContent"></div>
     </div>
 
     <!-- LEADERBOARD PAGE -->
@@ -1014,6 +1023,7 @@ function executeSwitch(page) {
     }
     if (page === 'gallery') renderGallery();
     if (page === 'swipe') renderSwipe();
+    if (page === 'swipeStats') { loadAllData().then(() => renderSwipeStats()); }
     if (page === 'tournament') renderTournamentMenu();
     if (page === 'stats') { loadAllData().then(() => renderStats()); }
     if (page === 'leaderboard') { loadAllData().then(() => renderLeaderboard()); }
@@ -1454,7 +1464,16 @@ let swipeDeck = [];
 let swipeIdx = 0;
 
 function renderSwipe() {
-    swipeDeck = shuffle([...LOGOS]);
+    const store = getStore();
+    // Filter out logos this user has already swiped
+    const alreadySwiped = new Set();
+    Object.entries(store.swipes || {}).forEach(([logoId, data]) => {
+        if (data.right.includes(currentUser) || data.left.includes(currentUser)) {
+            alreadySwiped.add(logoId);
+        }
+    });
+    const unswiped = LOGOS.filter(l => !alreadySwiped.has(l.id));
+    swipeDeck = shuffle(unswiped);
     swipeIdx = 0;
     renderSwipeCard();
 }
@@ -1462,13 +1481,15 @@ function renderSwipe() {
 function renderSwipeCard() {
     const content = document.getElementById('swipeContent');
     if (swipeIdx >= swipeDeck.length) {
+        const totalSwiped = LOGOS.length - swipeDeck.length + swipeIdx;
+        const remaining = LOGOS.length - totalSwiped;
         content.innerHTML = `
             <div class="swipe-container">
-                <h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;">Tüm Logolar <em style="color:var(--primary);font-style:normal;">Değerlendirildi!</em></h2>
-                <p style="color:var(--text-muted);margin-top:8px;">Toplam ${LOGOS.length} logoyu swipe ettiniz.</p>
+                <h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;">${remaining === 0 ? 'Tüm Logolar' : 'Mevcut Logolar'} <em style="color:var(--primary);font-style:normal;">Değerlendirildi!</em></h2>
+                <p style="color:var(--text-muted);margin-top:8px;">Toplam ${totalSwiped} / ${LOGOS.length} logoyu swipe ettiniz.</p>
                 <div class="btn-group">
-                    <button class="start-btn" onclick="resetSwipes()">🔄 Tekrar Başla</button>
-                    <button class="start-btn secondary" onclick="switchPage('leaderboard')">🏆 Sıralamaya Git</button>
+                    <button class="start-btn" onclick="switchPage('swipeStats')">📊 Swipe Sonuçlarına Git</button>
+                    <button class="start-btn secondary" onclick="forceResetSwipes()">🔄 Tümünü Tekrar Swipe Et</button>
                 </div>
             </div>`;
         return;
@@ -1551,10 +1572,117 @@ async function doSwipe(dir, fromDrag = false) {
 }
 
 function resetSwipes() {
-    swipeIdx = 0;
-    // Re-shuffle all logos
+    renderSwipe();
+}
+
+function forceResetSwipes() {
     swipeDeck = shuffle([...LOGOS]);
+    swipeIdx = 0;
     renderSwipeCard();
+}
+
+// ===================== SWIPE STATS =====================
+function renderSwipeStats() {
+    const store = getStore();
+    const content = document.getElementById('swipeStatsContent');
+
+    // Collect per-user swipe counts
+    const userSwipeCounts = {};
+    Object.values(store.swipes || {}).forEach(data => {
+        [...data.right, ...data.left].forEach(u => {
+            userSwipeCounts[u] = (userSwipeCounts[u] || 0) + 1;
+        });
+    });
+    const totalUniqueSwipes = Object.values(store.swipes || {}).reduce((s, d) => s + d.right.length + d.left.length, 0);
+    const usersWhoSwiped = Object.keys(userSwipeCounts).length;
+
+    // My stats
+    let myLikes = 0, myDislikes = 0;
+    Object.values(store.swipes || {}).forEach(data => {
+        if (data.right.includes(currentUser)) myLikes++;
+        if (data.left.includes(currentUser)) myDislikes++;
+    });
+    const myTotal = myLikes + myDislikes;
+    const myRemaining = LOGOS.length - myTotal;
+
+    // Rank logos by swipe data only
+    const ranked = LOGOS.map(logo => {
+        const sd = store.swipes?.[logo.id] || { right: [], left: [] };
+        const likes = sd.right.length;
+        const dislikes = sd.left.length;
+        const total = likes + dislikes;
+        const likeRate = total > 0 ? (likes / total * 100) : 0;
+        const myVote = sd.right.includes(currentUser) ? '💚' : sd.left.includes(currentUser) ? '✕' : '—';
+        return { ...logo, likes, dislikes, total, likeRate, myVote };
+    }).sort((a, b) => b.likeRate - a.likeRate || b.likes - a.likes);
+
+    // Per-user breakdown
+    const userRows = Object.entries(userSwipeCounts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([name, count]) => {
+            let uLikes = 0;
+            Object.values(store.swipes || {}).forEach(d => { if (d.right.includes(name)) uLikes++; });
+            const pct = count > 0 ? Math.round(uLikes / count * 100) : 0;
+            return `<tr>
+                <td style="color:var(--primary); font-weight:500;">${name}</td>
+                <td>${count} / ${LOGOS.length}</td>
+                <td>💚 ${uLikes} · ✕ ${count - uLikes}</td>
+                <td style="color:var(--green);">${pct}%</td>
+            </tr>`;
+        }).join('');
+
+    content.innerHTML = `
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">${totalUniqueSwipes}</div>
+                <div class="stat-label">Toplam Swipe</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${usersWhoSwiped}</div>
+                <div class="stat-label">Swipe Eden Kişi</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="font-size:1.8rem;">${myLikes}💚 / ${myDislikes}✕</div>
+                <div class="stat-label">Senin Swipe'ların</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${myRemaining}</div>
+                <div class="stat-label">Kalan Logo</div>
+            </div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; margin:32px 0 16px;">Swipe <em style="color:var(--primary);font-style:normal;">Sıralaması</em></h3>
+        <div class="leaderboard">
+            ${ranked.map((logo, i) => {
+                const barW = logo.total > 0 ? logo.likeRate : 0;
+                return `
+                <div class="leaderboard-item">
+                    <div class="leaderboard-rank ${i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : ''}">${i + 1}</div>
+                    <img class="leaderboard-img" src="${logo.img}" alt="${logo.name}">
+                    <div class="leaderboard-info">
+                        <div class="leaderboard-name">${logo.name}</div>
+                        <div class="leaderboard-stats">
+                            💚 ${logo.likes} · ✕ ${logo.dislikes} · 
+                            ${logo.total > 0 ? `%${logo.likeRate.toFixed(0)} beğeni` : 'Henüz swipe yok'}
+                            <span style="margin-left:8px; padding:2px 8px; border-radius:100px; font-size:0.7rem; background:${logo.myVote === '💚' ? 'rgba(124,232,168,0.15)' : logo.myVote === '✕' ? 'rgba(232,124,124,0.15)' : 'var(--surface2)'}; color:${logo.myVote === '💚' ? 'var(--green)' : logo.myVote === '✕' ? 'var(--red)' : 'var(--text-muted)'};">${logo.myVote === '—' ? 'Swipe etmedin' : 'Sen: ' + logo.myVote}</span>
+                        </div>
+                        <div style="margin-top:4px;height:4px;width:100%;max-width:200px;background:var(--surface2);border-radius:100px;overflow:hidden;">
+                            <div style="height:100%;width:${barW}%;background:linear-gradient(90deg,var(--green),var(--primary));border-radius:100px;"></div>
+                        </div>
+                    </div>
+                    <div class="leaderboard-score" style="font-size:1.1rem;">${logo.total > 0 ? logo.likeRate.toFixed(0) + '%' : '—'}</div>
+                </div>`;
+            }).join('')}
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; margin:40px 0 16px;">Kullanıcı <em style="color:var(--primary);font-style:normal;">Bazlı Swipe</em></h3>
+        <table class="history-table">
+            <thead><tr><th>Kullanıcı</th><th>İlerleme</th><th>Sonuç</th><th>Beğeni %</th></tr></thead>
+            <tbody>${userRows || '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Henüz swipe yok</td></tr>'}</tbody>
+        </table>
+
+        ${myRemaining > 0 ? `<div class="btn-group" style="margin-top:32px;"><button class="start-btn" onclick="switchPage('swipe')">🔥 Swipe Etmeye Devam (${myRemaining} kaldı)</button></div>` : ''}
+    `;
 }
 
 // ===================== LEADERBOARD (Public) =====================
