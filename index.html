@@ -521,67 +521,182 @@
             border-radius: 50vw 50vw 0 0;
         }
 
-        /* MOCKUP MODAL */
+        /* ======= DEVICE MOCKUP MODAL ======= */
         .mockup-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 10, 10, 0.85); z-index: 1000; align-items: center; justify-content: center;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.88); z-index: 1000;
+            align-items: center; justify-content: center; flex-direction: column; gap: 20px;
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
         }
-        .mockup-modal.active { display: flex; animation: fadeIn 0.3s ease; }
-        .iphone-wrapper { position: relative; }
-        .iphone-frame {
-            width: 320px; height: 650px; background: #000;
-            border-radius: 40px; border: 12px solid #222;
-            position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 0 2px #444;
+        .mockup-modal.active { display: flex; animation: fadeIn 0.4s ease; }
+
+        /* Device Toggle */
+        .device-toggle {
+            display: flex; gap: 4px; background: rgba(255,255,255,0.08);
+            border-radius: 100px; padding: 4px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .device-toggle-btn {
+            padding: 8px 20px; border-radius: 100px; border: none;
+            font-size: 0.78rem; font-weight: 600; cursor: pointer;
+            background: transparent; color: rgba(255,255,255,0.5);
+            transition: all 0.3s; font-family: 'Inter', sans-serif;
+        }
+        .device-toggle-btn.active {
+            background: rgba(255,255,255,0.15); color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .device-toggle-btn:hover:not(.active) { color: rgba(255,255,255,0.8); }
+
+        /* Device Frame */
+        .device-wrapper { position: relative; }
+        .device-frame {
+            width: 310px; height: 670px; position: relative;
             overflow: hidden;
-            background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');
             background-size: cover; background-position: center;
         }
-        .iphone-notch {
-            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-            width: 120px; height: 26px; background: #222;
-            border-radius: 0 0 16px 16px; z-index: 10;
+
+        /* iPhone 15 Pro */
+        .device-frame.iphone {
+            border-radius: 50px; border: 10px solid #1a1a1a;
+            box-shadow:
+                0 0 0 2px #333,
+                0 0 0 4px #1a1a1a,
+                0 30px 80px rgba(0,0,0,0.7),
+                inset 0 0 4px rgba(255,255,255,0.05);
+            background-color: #000;
+            background-image:
+                radial-gradient(ellipse at 30% 20%, rgba(88,86,214,0.4), transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(255,55,95,0.3), transparent 50%),
+                radial-gradient(ellipse at 50% 90%, rgba(52,199,89,0.2), transparent 40%);
         }
-        .iphone-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 12px;
-            padding: 50px 16px 16px;
+        /* Dynamic Island */
+        .dynamic-island {
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 34px; background: #000;
+            border-radius: 20px; z-index: 10;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
         }
-        .app-icon-wrapper {
-            display: flex; flex-direction: column; align-items: center; gap: 6px;
-            position: relative; cursor: pointer;
+        .dynamic-island::after {
+            content: ''; position: absolute; top: 10px; right: 22px;
+            width: 10px; height: 10px; border-radius: 50%;
+            background: radial-gradient(circle, #1a3a4a, #0d1f2d);
+            box-shadow: inset 0 0 2px rgba(0,180,255,0.3);
         }
-        .app-icon {
-            width: 58px; height: 58px; border-radius: 14px;
-            object-fit: cover; background: #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+        /* Samsung Galaxy S24 */
+        .device-frame.samsung {
+            border-radius: 36px; border: 8px solid #1a1a1a;
+            box-shadow:
+                0 0 0 1.5px #444,
+                0 0 0 3px #1a1a1a,
+                0 30px 80px rgba(0,0,0,0.7),
+                inset 0 0 3px rgba(255,255,255,0.04);
+            background-color: #0a0a1a;
+            background-image:
+                radial-gradient(ellipse at 25% 25%, rgba(0,100,200,0.35), transparent 55%),
+                radial-gradient(ellipse at 75% 70%, rgba(120,0,200,0.25), transparent 50%);
         }
-        .app-name {
-            font-size: 0.65rem; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-            letter-spacing: 0.02em; text-align: center;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;
+        .samsung-punch-hole {
+            position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+            width: 14px; height: 14px; border-radius: 50%; z-index: 10;
+            background: #0a0a0a;
+            box-shadow: 0 0 0 2px #1a1a1a, inset 0 0 2px rgba(0,100,200,0.2);
         }
-        .iphone-dock {
-            position: absolute; bottom: 12px; left: 12px; right: 12px;
-            height: 84px; background: rgba(255,255,255,0.25);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: 28px; display: flex; align-items: center; justify-content: space-evenly;
-            padding: 0 10px;
+
+        /* Status Bar */
+        .status-bar {
+            position: absolute; top: 0; left: 0; right: 0; height: 50px; z-index: 9;
+            display: flex; align-items: flex-start; justify-content: space-between;
+            padding: 14px 24px 0;
         }
-        .mockup-close {
-            position: absolute; top: -16px; right: -50px;
-            background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3);
-            width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; cursor: pointer; z-index: 1001; transition: 0.2s; backdrop-filter: blur(8px);
+        .sb-time { font-size: 14px; font-weight: 600; color: #fff; font-family: -apple-system, 'SF Pro Text', sans-serif; }
+        .sb-icons { display: flex; align-items: center; gap: 6px; }
+        .sb-icons svg { fill: #fff; }
+
+        /* App Grid */
+        .app-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 22px 0; padding: 56px 14px 100px; position: relative; z-index: 5;
         }
+        .app-slot {
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+        }
+        .app-ico {
+            width: 56px; height: 56px; border-radius: 13px; object-fit: cover;
+            background: #222; box-shadow: 0 3px 10px rgba(0,0,0,0.35);
+            /* Fallback gradient for broken images */
+            background: linear-gradient(135deg, #333, #555);
+        }
+        .app-ico.samsung-style { border-radius: 16px; }
+        .app-lbl {
+            font-size: 10px; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+            text-align: center; font-family: -apple-system, 'SF Pro Text', sans-serif;
+            max-width: 64px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            letter-spacing: -0.01em;
+        }
+
+        /* Cotidie Highlight */
+        .app-slot.cotidie-highlight .app-ico {
+            animation: cotidie-glow 2s ease-in-out infinite;
+            border: 2.5px solid var(--gold);
+        }
+        @keyframes cotidie-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.6), 0 3px 10px rgba(0,0,0,0.35); }
+            50% { box-shadow: 0 0 0 8px rgba(212,175,55,0), 0 3px 16px rgba(212,175,55,0.3); }
+        }
+        .app-slot.cotidie-highlight .app-lbl {
+            color: var(--gold); font-weight: 700; text-shadow: 0 0 8px rgba(212,175,55,0.4);
+        }
+
+        /* Dock */
+        .phone-dock {
+            position: absolute; bottom: 0; left: 0; right: 0; z-index: 6;
+            padding: 0 14px 10px;
+        }
+        .dock-bar {
+            background: rgba(255,255,255,0.18);
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border-radius: 26px; display: flex; align-items: center;
+            justify-content: space-evenly; padding: 12px 6px; gap: 2px;
+        }
+        .dock-bar .app-ico { width: 52px; height: 52px; }
+        .dock-bar.samsung-dock {
+            border-radius: 0; background: rgba(0,0,0,0.4);
+            padding: 8px 20px 20px;
+        }
+
+        /* Home Indicator */
+        .home-indicator {
+            position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 4px; border-radius: 100px;
+            background: rgba(255,255,255,0.3); z-index: 7;
+        }
+
+        /* Close */
+        .mockup-close-btn {
+            position: absolute; top: -20px; right: -52px;
+            background: rgba(255,255,255,0.08); color: #fff;
+            border: 1px solid rgba(255,255,255,0.15);
+            width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; cursor: pointer; z-index: 1001;
+            transition: all 0.25s; backdrop-filter: blur(8px);
+        }
+        .mockup-close-btn:hover { background: rgba(255,255,255,0.95); color: #000; transform: scale(1.1); }
         @media (max-width: 768px) {
-            .mockup-close { top: 16px; right: 16px; position: fixed; background: rgba(0,0,0,0.5); border:none; z-index:9999; }
+            .mockup-close-btn {
+                position: fixed; top: 16px; right: 16px;
+                background: rgba(0,0,0,0.6); border: none; z-index: 9999;
+            }
         }
-        .mockup-close:hover { background: #fff; color: #000; }
-        @keyframes highlight-pulse-c {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212,175,55,0.8); border: 2px solid var(--gold); }
-            70% { transform: scale(1.08); box-shadow: 0 0 0 15px rgba(212,175,55,0); border: 2px solid var(--primary); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212,175,55,0); border: 2px solid var(--gold); }
+
+        /* Logo label below */
+        .mockup-logo-label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem; color: rgba(255,255,255,0.7);
+            text-align: center; margin-top: 4px;
         }
+        .mockup-logo-label strong { color: var(--gold); }
 
     </style>
     <!-- CANVAS CONFETTI -->
@@ -1497,65 +1612,129 @@ function renderLeaderboard() {
         </div>
     `;
 }
-// ===================== MOCKUP PREVIEW =====================
-function openMockupModal(logoId) {
-    const logo = getLogoById(logoId);
-    if (!logo) return;
-    
-    let mockHTML = `
-    <div class="mockup-modal active" id="mockupModal" onclick="if(event.target===this) closeMockupModal()">
-        <div class="iphone-wrapper">
-            <button class="mockup-close" onclick="closeMockupModal()">✕</button>
-            <div class="iphone-frame">
-                <div class="iphone-notch"></div>
-                <!-- Status Bar -->
-                <div style="position:absolute; top:8px; left:22px; font-size:12px; font-weight:600; color:#fff; z-index:11;">9:41</div>
-                <div style="position:absolute; top:8px; right:20px; display:flex; gap:6px; z-index:11; align-items:center;">
-                    <div style="font-size:10px; color:#fff; font-weight:bold;">5G</div>
-                    <div style="width:20px; height:10px; border:1px solid #fff; border-radius:3px; position:relative;"><div style="background:#fff; width:14px; height:6px; position:absolute; top:1px; left:1px; border-radius:1px;"></div></div>
-                </div>
-                
-                <div class="iphone-grid">
-                    <div class="app-icon-wrapper"><img src="https://upload.wikimedia.org/wikipedia/commons/archive/a/a5/20200819121630%21Instagram_icon.png" class="app-icon"><div class="app-name">Instagram</div></div>
-                    <div class="app-icon-wrapper"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="app-icon" style="background:#25D366"><div class="app-name">WhatsApp</div></div>
-                    <div class="app-icon-wrapper"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" class="app-icon" style="background:#fff; padding:3px; object-fit:contain"><div class="app-name">Photos</div></div>
-                    <div class="app-icon-wrapper"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Calendar_icon_%282020%29.svg" class="app-icon" style="background:#fff; padding:6px"><div class="app-name">Calendar</div></div>
-                    
-                    <div class="app-icon-wrapper"><img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg" class="app-icon" style="background:#1ED760"><div class="app-name">Spotify</div></div>
-                    <div class="app-icon-wrapper"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="app-icon" style="background:#000; padding:6px; object-fit:contain"><div class="app-name">Netflix</div></div>
-                    <div class="app-icon-wrapper"><img src="https://abs.twimg.com/responsive-web/client-web/icon-ios.b1fc727a.png" class="app-icon"><div class="app-name">X</div></div>
-                    <div class="app-icon-wrapper"><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" class="app-icon"><div class="app-name">YouTube</div></div>
-                    
-                    <!-- COTIDIE HIGHLIGHT -->
-                    <div class="app-icon-wrapper" style="animation: highlight-pulse-c 2.5s infinite; border-radius: 14px; position:relative; z-index:5;">
-                        <img src="${logo.img}" class="app-icon" style="background: var(--surface2);">
-                        <div class="app-name" style="color:var(--gold); font-weight:700;">Cotidie</div>
-                    </div>
+// ===================== DEVICE MOCKUP PREVIEW =====================
+let mockupDevice = 'iphone';
 
-                    <div class="app-icon-wrapper"><img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" class="app-icon" style="background:#fff; padding:12px; object-fit:contain"><div class="app-name">Wallet</div></div>
-                    <div class="app-icon-wrapper"><img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" class="app-icon" style="background:#fff; padding:4px"><div class="app-name">Notion</div></div>
-                    <div class="app-icon-wrapper"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" class="app-icon" style="background:#fff; padding:6px"><div class="app-name">Gmail</div></div>
+const REAL_APPS = [
+    { name: 'Instagram', domain: 'instagram.com', color: '#E1306C' },
+    { name: 'WhatsApp', domain: 'whatsapp.com', color: '#25D366' },
+    { name: 'Spotify', domain: 'spotify.com', color: '#1DB954' },
+    { name: 'YouTube', domain: 'youtube.com', color: '#FF0000' },
+    { name: 'Netflix', domain: 'netflix.com', color: '#E50914' },
+    { name: 'X', domain: 'x.com', color: '#000' },
+    { name: 'TikTok', domain: 'tiktok.com', color: '#010101' },
+    { name: 'Telegram', domain: 'telegram.org', color: '#0088cc' },
+    { name: 'Notion', domain: 'notion.so', color: '#000' },
+    { name: 'Gmail', domain: 'gmail.com', color: '#EA4335' },
+    { name: 'Discord', domain: 'discord.com', color: '#5865F2' },
+];
+
+const DOCK_APPS_IPHONE = [
+    { name: 'Phone', emoji: '📞', color: '#34C759' },
+    { name: 'Safari', emoji: '🧭', color: '#006CFF' },
+    { name: 'Messages', emoji: '💬', color: '#34C759' },
+    { name: 'Music', emoji: '🎵', color: '#FC3C44' },
+];
+
+const DOCK_APPS_SAMSUNG = [
+    { name: 'Phone', emoji: '📞', color: '#4CAF50' },
+    { name: 'Messages', emoji: '💬', color: '#2196F3' },
+    { name: 'Chrome', domain: 'google.com', color: '#4285F4' },
+    { name: 'Camera', emoji: '📷', color: '#607D8B' },
+];
+
+function appIcon(app, isSamsung) {
+    const br = isSamsung ? 'border-radius:16px;' : 'border-radius:13px;';
+    if (app.domain) {
+        return `<img src="https://www.google.com/s2/favicons?domain=${app.domain}&sz=128" class="app-ico" style="${br} background:${app.color};" onerror="this.style.fontSize='28px';this.style.lineHeight='56px';this.style.textAlign='center';this.src='';this.alt='${app.name[0]}';">`;
+    }
+    return `<div class="app-ico" style="${br} background:${app.color}; display:flex; align-items:center; justify-content:center; font-size:28px;">${app.emoji}</div>`;
+}
+
+function buildStatusBar(type) {
+    const time = type === 'iphone' ? '9:41' : '12:30';
+    const signalSVG = `<svg width="16" height="12" viewBox="0 0 16 12"><rect x="0" y="8" width="3" height="4" rx="0.8" fill="#fff"/><rect x="4.5" y="5" width="3" height="7" rx="0.8" fill="#fff"/><rect x="9" y="2" width="3" height="10" rx="0.8" fill="#fff"/><rect x="13.5" y="0" width="2.5" height="12" rx="0.8" fill="rgba(255,255,255,0.3)"/></svg>`;
+    const wifiSVG = `<svg width="14" height="12" viewBox="0 0 14 12"><path d="M7 10.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" fill="#fff"/><path d="M3.5 8.5C4.5 7.2 5.7 6.5 7 6.5s2.5.7 3.5 2" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M1 5.5C2.8 3.2 4.8 2 7 2s4.2 1.2 6 3.5" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`;
+    const batterySVG = `<svg width="22" height="11" viewBox="0 0 22 11"><rect x="0" y="0" width="19" height="11" rx="2.5" stroke="#fff" stroke-width="1.2" fill="none"/><rect x="2" y="2" width="13" height="7" rx="1" fill="#fff"/><rect x="20" y="3.5" width="2" height="4" rx="1" fill="rgba(255,255,255,0.4)"/></svg>`;
+    return `
+    <div class="status-bar">
+        <div class="sb-time">${time}</div>
+        <div class="sb-icons">${signalSVG}${wifiSVG}${batterySVG}</div>
+    </div>`;
+}
+
+function buildMockupHTML(logoImg, logoName, device) {
+    const isSamsung = device === 'samsung';
+    const frameClass = isSamsung ? 'samsung' : 'iphone';
+    const topElement = isSamsung
+        ? '<div class="samsung-punch-hole"></div>'
+        : '<div class="dynamic-island"></div>';
+    const dockApps = isSamsung ? DOCK_APPS_SAMSUNG : DOCK_APPS_IPHONE;
+    const dockClass = isSamsung ? 'dock-bar samsung-dock' : 'dock-bar';
+
+    // Build grid apps (8 real apps + Cotidie + 3 more)
+    let gridHTML = '';
+    REAL_APPS.slice(0, 8).forEach(app => {
+        gridHTML += `<div class="app-slot">${appIcon(app, isSamsung)}<div class="app-lbl">${app.name}</div></div>`;
+    });
+    // Cotidie in prominent position
+    gridHTML += `
+        <div class="app-slot cotidie-highlight">
+            <img src="${logoImg}" class="app-ico" style="${isSamsung ? 'border-radius:16px;' : 'border-radius:13px;'} background:#1A1816;">
+            <div class="app-lbl">Cotidie</div>
+        </div>`;
+    REAL_APPS.slice(8).forEach(app => {
+        gridHTML += `<div class="app-slot">${appIcon(app, isSamsung)}<div class="app-lbl">${app.name}</div></div>`;
+    });
+
+    // Dock
+    let dockHTML = '';
+    dockApps.forEach(app => {
+        dockHTML += appIcon(app, isSamsung);
+    });
+
+    return `
+    <div class="mockup-modal active" id="mockupModal" onclick="if(event.target===this) closeMockupModal()">
+        <div class="device-toggle">
+            <button class="device-toggle-btn ${device==='iphone'?'active':''}" onclick="switchMockupDevice('iphone')"> iPhone 15 Pro</button>
+            <button class="device-toggle-btn ${device==='samsung'?'active':''}" onclick="switchMockupDevice('samsung')">🤖 Galaxy S24</button>
+        </div>
+        <div class="device-wrapper">
+            <button class="mockup-close-btn" onclick="closeMockupModal()">✕</button>
+            <div class="device-frame ${frameClass}">
+                ${topElement}
+                ${buildStatusBar(device)}
+                <div class="app-grid">${gridHTML}</div>
+                <div class="phone-dock">
+                    <div class="${dockClass}">${dockHTML}</div>
                 </div>
-                
-                <div class="iphone-dock">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/52/Safari_browser_logo.svg" class="app-icon" style="background:#fff">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/iOS_Messages_icon.svg/512px-iOS_Messages_icon.svg.png" class="app-icon">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Apple_Music_logo.svg/512px-Apple_Music_logo.svg.png" class="app-icon">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Icon_Phone_iOS_18.svg" class="app-icon" style="background:#34C759; padding:2px">
-                </div>
+                <div class="home-indicator"></div>
             </div>
         </div>
-    </div>
-    `;
-    
+        <div class="mockup-logo-label"><strong>${logoName}</strong> · ${isSamsung ? 'Samsung Galaxy S24' : 'iPhone 15 Pro'}</div>
+    </div>`;
+}
+
+let _currentMockupLogoId = null;
+
+function openMockupModal(logoId) {
+    _currentMockupLogoId = logoId;
+    const logo = getLogoById(logoId);
+    if (!logo) return;
     closeMockupModal();
-    document.body.insertAdjacentHTML('beforeend', mockHTML);
+    document.body.insertAdjacentHTML('beforeend', buildMockupHTML(logo.img, logo.name, mockupDevice));
+}
+
+function switchMockupDevice(device) {
+    mockupDevice = device;
+    if (_currentMockupLogoId) {
+        openMockupModal(_currentMockupLogoId);
+    }
 }
 
 function closeMockupModal() {
     const el = document.getElementById('mockupModal');
-    if (el) el.classList.remove('active');
-    setTimeout(() => { if(el) el.remove(); }, 300);
+    if (el) el.remove();
 }
 
 // ===================== INIT =====================
