@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sıkça Sorulan Sorular | Cotidie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        .page-content { padding-top: 150px; padding-bottom: 80px; max-width: 800px; text-align: center; }
+        .page-content p { margin-bottom: 40px; }
+        .contact-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 64px; }
+        .contact-card { padding: 40px; border-radius: var(--radius-blob); text-align: center; }
+        .faq-section { text-align: left; }
+        .faq-item { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border-glass); }
+        .faq-item h4 { font-size: 1.2rem; margin-bottom: 12px; color: var(--primary); }
+    </style>
+</head>
+<body>
+    <nav class="navbar glass">
+        <div class="container nav-content">
+            <a href="index.html" class="logo"><div class="logo-icon"></div>Cotidie</a>
+            <div class="nav-links">
+                <a href="index.html#features">Özellikler</a>
+                <a href="index.html#download" class="btn btn-primary btn-sm">Hemen İndir</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container page-content reveal fade-bottom active">
+        <h1 class="serif">Destek & SSS</h1>
+        <p>Cotidie asistanınızla ilgili sorularınız mı var?</p>
+        
+        <div class="contact-cards">
+            <div class="contact-card glass">
+                <h3 class="serif" style="margin-bottom:12px;">Bize Ulaşın</h3>
+                <a href="mailto:hello@Cotidie.app" class="btn btn-primary" style="margin-top:16px;">hello@Cotidie.app</a>
+            </div>
+        </div>
+
+        <div id="faq" class="faq-section">
+            <h2 class="serif" style="margin-bottom:32px;">Sıkça Sorulan Sorular</h2>
+            <div class="faq-item">
+                <h4>Yapay Zeka yazdıklarımı okuyor mu? Gelecekte bana karşı kullanılır mı?</h4>
+                <p>Verileriniz yalnızca analiz anında güvenli bir şekilde işlenir ve Cotidie'nin dili anlaması için kullanılır. Cihazınızdan çıkan veriler tamamen anonimleştirilmiş ve silinmek üzere işaretlenmiş durumdadır. Günlükleriniz Cotidie modellerini eğitmek için ASLA kullanılmaz.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Secret Vault (Gizli Kasa) şifremi unutursam ne olur?</h4>
+                <p>Gizliliğinize olan saygımızdan dolayı, Secret Vault AES-256 ile cihaz içi şifrelenir. Eğer Pin kodunuzu unutursanız ve biyometrik doğrulamanız başarısız olursa, Cotidie ekibi dahi kasayı açamaz. Lütfen pininizi güvenli bir yere not edin.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Sesli not (Dikte) kullanabilir miyim?</h4>
+                <p>Evet, mikrofon izinlerini onaylayarak yapay zekaya doğrudan konuşabilirsiniz. Cotidie gelişmiş ses tanıma (Whisper/SpeechRecognition) kullanır.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content" style="margin-bottom:0; flex-direction:column; align-items:center; text-align:center;">
+             <p>&copy; 2026 Cotidie. Tüm Hakları Saklıdır.</p>
+        </div>
+    </footer>
+</body>
+</html>

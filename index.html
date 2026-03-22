@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotidie — Zihninizdeki Sesi Duyun | Yapay Zeka Destekli Günlük</title>
+    <meta name="description"
+        content="Yapay zeka destekli premium günlük. Duygularınızı analiz edin, sırlarınızı koruyun, kendinizi keşfedin. iOS ve Android için şimdi indirin.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://cotidie.app/">
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    <meta name="theme-color" content="#080709">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://cotidie.app/">
+    <meta property="og:title" content="Cotidie — Zihninizdeki Sesi Duyun">
+    <meta property="og:description" content="Yapay zeka destekli premium günlük. Duygularınızı analiz edin, sırlarınızı koruyun, kendinizi keşfedin.">
+    <meta property="og:image" content="https://cotidie.app/assets/images/hero.png">
+    <meta property="og:locale" content="tr_TR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:site_name" content="Cotidie">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cotidie — Zihninizdeki Sesi Duyun">
+    <meta name="twitter:description" content="Yapay zeka destekli premium günlük. Duygularınızı analiz edin, sırlarınızı koruyun, kendinizi keşfedin.">
+    <meta name="twitter:image" content="https://cotidie.app/assets/images/hero.png">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Cotidie",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "iOS, Android",
+        "description": "Yapay zeka destekli premium günlük uygulaması. Duygularınızı analiz edin, sırlarınızı koruyun, kendinizi keşfedin.",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "TRY"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "100"
+        }
+    }
+    </script>
+
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://developer.apple.com">
+    <link rel="dns-prefetch" href="https://upload.wikimedia.org">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Syne:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+
+    <!-- Skip to Content (Accessibility) -->
+    <a href="#main-content" class="skip-to-content">İçeriğe Atla</a>
+
+    <!-- Noscript Fallback -->
+    <noscript>
+        <style>
+            .rv { opacity: 1 !important; transform: none !important; filter: none !important; }
+            .marquee-track { animation: none !important; }
+            .testimonials-track { animation: none !important; }
+        </style>
+    </noscript>
+
+    <!-- Cursor Glow Effect -->
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+    <!-- Ambient Living Liquid Background -->
+    <div class="ambient">
+        <div class="amb amb-1"></div>
+        <div class="amb amb-2"></div>
+        <div class="amb amb-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" aria-label="Ana Menü">
+        <div class="container nav-content">
+            <a href="index.html" class="logo" aria-label="Cotidie Ana Sayfa">
+                <div class="logo-icon" aria-hidden="true"></div>
+                Cotidie
+            </a>
+
+            <!-- Hamburger Menu Button (Mobile) -->
+            <button class="hamburger" id="hamburgerBtn" aria-label="Menüyü aç" aria-expanded="false" aria-controls="navLinks">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <div class="nav-links" id="navLinks">
+                <a href="#features" data-i18n="nav.features">Özellikler</a>
+                <a href="#proof" data-i18n="nav.community">Topluluk</a>
+                <a href="#pricing" data-i18n="nav.premium">Premium</a>
+
+                <!-- Language Selector -->
+                <div class="lang-selector">
+                    <button class="lang-btn" id="langToggle" aria-label="Dil seçin">TR ▾</button>
+                    <div class="lang-menu" id="langMenu" role="menu">
+                        <a href="#" data-lang="tr" role="menuitem">Türkçe</a>
+                        <a href="#" data-lang="en" role="menuitem">English</a>
+                    </div>
+                </div>
+
+                <a href="#download" class="btn btn-outline" data-i18n="nav.download">İndir</a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content">
+
+    <!-- Hero Section -->
+    <section class="hero container rv d1" aria-label="Ana Tanıtım">
+        <div class="hero-content">
+            <span class="kicker" data-i18n="hero.kicker">Yapay Zeka Destekli Premium Günlük</span>
+            <h1 data-i18n="hero.h1">Zihninizdeki <em>sesi</em><br>nihayet duyun.</h1>
+            <p class="hero-sub">Sadece <span class="morph-word" id="morphWord">yazın</span>, gerisini Cotidie'ye bırakın.
+                Duygularınızı analiz eden, güvenli bir şekilde saklayan ve sizinle
+                birlikte evrilen en akıllı günlük arkadaşınız.</p>
+
+            <div class="hero-actions">
+                <a href="#" class="store-badge" aria-label="App Store'dan İndir">
+                    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                        alt="Download on the App Store" width="120" height="40" loading="lazy">
+                </a>
+                <a href="#" class="store-badge" aria-label="Google Play'den İndir">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                        alt="Get it on Google Play" width="135" height="40" loading="lazy">
+                </a>
+            </div>
+
+            <div class="social-proof">
+                <div class="avatars">
+                    <div class="avatar">E</div>
+                    <div class="avatar">A</div>
+                    <div class="avatar">Ş</div>
+                    <div class="avatar">+</div>
+                </div>
+                <p class="proof-text" data-i18n="hero.proof">
+                    <strong>100+</strong> Kişi zihnini keşfediyor
+                </p>
+            </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+            <div class="float-card fc-left">
+                <div class="fc-label" data-i18n="phone.mood">Mod Analizi</div>
+                <div class="fc-value" style="color: var(--secondary);" data-i18n="phone.peaceful"><span
+                        style="font-size: 1.2rem;">✧</span> Huzurlu</div>
+            </div>
+
+            <div class="phone-frame">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                    <div class="ui-status-bar">
+                        <span>9:41</span>
+                        <span>Cotidie</span>
+                    </div>
+
+                    <div class="ui-content">
+                        <div class="ui-header">
+                            <h3>İçgörüler</h3>
+                            <p>Son 7 günün analizi</p>
+                        </div>
+
+                        <div class="ui-card">
+                            <div class="ui-card-title">Duygu Eğilimi</div>
+                            <div class="ui-chart">
+                                <div class="ui-bar sage" style="height: 40%;"></div>
+                                <div class="ui-bar gold" style="height: 70%;"></div>
+                                <div class="ui-bar sage" style="height: 60%;"></div>
+                                <div class="ui-bar gold" style="height: 90%;"></div>
+                                <div class="ui-bar sage" style="height: 50%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="ui-card">
+                            <div class="ui-card-title">Son Kayıt</div>
+                            <div class="ui-text-lines">
+                                <div class="ui-line" style="width: 100%;"></div>
+                                <div class="ui-line" style="width: 85%;"></div>
+                                <div class="ui-line" style="width: 60%; background: var(--primary);"></div>
+                            </div>
+                        </div>
+
+                        <div class="ui-ai-insight">
+                            <div class="ui-ai-title">
+                                <div class="ui-ai-dot"></div> Cotidie Analizi
+                            </div>
+                            <div class="ui-ai-text">Bu hafta stres seviyen düşüşte. Yazmaya devam etmek netliğini
+                                artırıyor.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="float-card fc-right">
+                <div class="fc-label" data-i18n="phone.vault">Vault Status</div>
+                <div class="fc-value" style="color: var(--primary);" data-i18n="phone.encrypted"><span
+                        style="font-size: 1.2rem;">🔒</span> Şifreli</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="marquee-wrapper">
+        <div class="marquee-track">
+            <!-- SET A (10 Unique Features) -->
+            <div class="marquee-item" data-i18n="mq.ai">Yapay Zeka Asistanı <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.vault">Şifreli Kasa <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.analysis">Duygu Analizi <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.voice">Sesli Dikte <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.time">Zaman Kapsülü <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.privacy">Gelişmiş Gizlilik <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.metrics">Zihin İstatistikleri <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.journal">Akıllı Günlük <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.prompts">İlham Soruları <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.design">Premium Arayüz <div class="mq-dot"></div>
+            </div>
+
+            <!-- SET B (Exact copy of Set A for seamless loop) -->
+            <div class="marquee-item" data-i18n="mq.ai">Yapay Zeka Asistanı <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.vault">Şifreli Kasa <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.analysis">Duygu Analizi <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.voice">Sesli Dikte <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.time">Zaman Kapsülü <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.privacy">Gelişmiş Gizlilik <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.metrics">Zihin İstatistikleri <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.journal">Akıllı Günlük <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.prompts">İlham Soruları <div class="mq-dot"></div>
+            </div>
+            <div class="marquee-item" data-i18n="mq.design">Premium Arayüz <div class="mq-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bento Features Grid -->
+    <section id="features" class="section-padding container" aria-labelledby="features-title">
+        <div class="section-header rv">
+            <h2 id="features-title" data-i18n="feat.title">Her detayıyla <em>kusursuz.</em></h2>
+            <p data-i18n="feat.sub">Cotidie, sadece bir uygulama değil; zihninizin dijital bir uzantısıdır. Sizi anlar,
+                korur ve geliştirir.</p>
+        </div>
+
+        <div class="bento-grid">
+
+            <!-- AI Chat Card -->
+            <div class="b-card card-ai rv d1">
+                <div class="bc-content">
+                    <span class="bc-tag" data-i18n="card.ai.tag">AI Companion</span>
+                    <h3 class="bc-h" data-i18n="card.ai.title">Geçmişinizle<br>sohbet edin.</h3>
+                    <p class="bc-p" data-i18n="card.ai.desc">Cotidie, yazarlarınızın ruhunu anlar ve size en doğru anda
+                        ayna tutar.</p>
+                </div>
+
+                <div class="bento-demo-container">
+                    <div class="bento-demo-chat">
+                        <div class="chat-mssg">
+                            <div class="c-av user">S</div>
+                            <div class="c-bub" data-i18n="card.ai.msg1">Bugün işte çok yoruldum, hiçbir şey başaramamış
+                                gibi hissediyorum.</div>
+                        </div>
+                        <div class="chat-mssg">
+                            <div class="c-av ai">C</div>
+                            <div class="c-bub ai" data-i18n="card.ai.msg2">Geçen hafta bitirdiğin o büyük projeyi
+                                hatırla. Dinlenmek de başarmanın bir parçasıdır.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vault Card -->
+            <div class="b-card card-vault rv d2">
+                <div class="bc-content">
+                    <span class="bc-tag" data-i18n="card.vault.tag">Kriptografik Güvenlik</span>
+                    <h3 class="bc-h" data-i18n="card.vault.title">Sırlarınız sadece size ait.</h3>
+                    <p class="bc-p" data-i18n="card.vault.desc">Yalnızca sizin parmak iziniz veya yüzünüz ile açılabilen
+                        aşılmaz şifreli kasanız.</p>
+                </div>
+
+                <div class="bento-demo-container">
+                    <div class="vault-lock">
+                        <div class="v-icon">
+                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </div>
+                        <div class="v-dots">
+                            <div class="v-dot filled"></div>
+                            <div class="v-dot filled"></div>
+                            <div class="v-dot filled"></div>
+                            <div class="v-dot"></div>
+                        </div>
+                        <div class="v-text" data-i18n="card.vault.pin">PIN <span>Girin</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Card -->
+            <div class="b-card card-dash rv d3">
+                <div class="bc-content">
+                    <span class="bc-tag" data-i18n="card.dash.tag">Derin Analiz</span>
+                    <h3 class="bc-h" data-i18n="card.dash.title">Kendi zihninizi keşfedin.</h3>
+                    <p class="bc-p" data-i18n="card.dash.desc">Zamanla büyüyen duygu eğilimleriniz ve düşünce
+                        haritanızla kendinizle yeniden tanışın.</p>
+                </div>
+
+                <div class="bento-demo-container">
+                    <div class="dash-stats">
+                        <div class="d-stat">
+                            <div class="d-lbl" data-i18n="card.dash.stat1">En yoğun hissiyat</div>
+                            <div class="d-val sage" data-i18n="card.dash.val1">Huzurlu</div>
+                        </div>
+                        <div class="d-stat">
+                            <div class="d-lbl" data-i18n="card.dash.stat2">Günlük Kelime</div>
+                            <div class="d-val">420</div>
+                        </div>
+                    </div>
+                    <div class="dash-chart">
+                        <div class="d-bar" style="height: 40%;"></div>
+                        <div class="d-bar" style="height: 60%;"></div>
+                        <div class="d-bar" style="height: 30%;"></div>
+                        <div class="d-bar" style="height: 80%;"></div>
+                        <div class="d-bar" style="height: 50%;"></div>
+                        <div class="d-bar" style="height: 90%;"></div>
+                        <div class="d-bar" style="height: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Streak Card -->
+            <div class="b-card card-streak rv d1">
+                <div class="bc-content">
+                    <span class="bc-tag" data-i18n="card.streak.tag">Zihin Akışı</span>
+                    <h3 class="bc-h" data-i18n="card.streak.title">Zinciri<br>kırmayın.</h3>
+                    <p class="bc-p" data-i18n="card.streak.desc">Her gün bir satır bile olsa yazmak, size kendi
+                        zihninizin anahtarını verir.</p>
+                </div>
+                <div class="bento-demo-container">
+                    <div class="streak-wrapper">
+                        <div class="streak-num">14</div>
+                        <div class="streak-lbl" data-i18n="card.streak.lbl">Gün Seri</div>
+                        <div class="streak-days">
+                            <div class="s-day done"></div>
+                            <div class="s-day done"></div>
+                            <div class="s-day done"></div>
+                            <div class="s-day done"></div>
+                            <div class="s-day done"></div>
+                            <div class="s-day today"></div>
+                            <div class="s-day"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Voice Dictation Card -->
+            <div class="b-card card-voice rv d2" style="grid-column: span 2;">
+                <div class="bc-content" style="flex: 1; max-width: 50%; margin-bottom: 0;">
+                    <span class="bc-tag" data-i18n="card.voice.tag">Sesli Dikte</span>
+                    <h3 class="bc-h" data-i18n="card.voice.title">Konuşun, o yazsın.</h3>
+                    <p class="bc-p" data-i18n="card.voice.desc">Yazamayacak kadar yorgun olduğunuz anlarda
+                        düşüncelerinizi sesli olarak aktarın, Cotidie sizin için hatasızca metne ve günlüğe dönüştürür.
+                    </p>
+                </div>
+                <div class="bento-demo-container"
+                    style="flex: 1; margin-top: 0; justify-content: center; align-items: center;">
+                    <div class="voice-wave">
+                        <div class="v-line"></div>
+                        <div class="v-line"></div>
+                        <div class="v-line"></div>
+                        <div class="v-line"></div>
+                        <div class="v-line"></div>
+                        <div class="v-line"></div>
+                        <div class="v-line"></div>
+                        <div class="v-line"></div>
+                        <div class="v-line"></div>
+                        <div class="v-line"></div>
+                        <div class="v-line"></div>
+                        <div class="v-line"></div>
+                        <div class="v-line"></div>
+                        <div class="v-line"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Proof Numbers Grid -->
+    <section id="proof" class="section-padding container" aria-label="Topluluk İstatistikleri">
+        <div class="proof-grid rv scale">
+            <div class="proof-card">
+                <div class="proof-num">1.2<em>M</em></div>
+                <div class="proof-desc" data-i18n="proof.desc1">Bugüne kadar güvenle şifrelenip saklanan toplam kelime
+                    sayısı.</div>
+            </div>
+            <div class="proof-card">
+                <div class="proof-num">80<em>%</em></div>
+                <div class="proof-desc" data-i18n="proof.desc2">Düzenli kullanıcılarımızın stres seviyelerinde
+                    hissettiği azalma oranı.</div>
+            </div>
+            <div class="proof-card">
+                <div class="proof-num">4.9<em>★</em></div>
+                <div class="proof-desc" data-i18n="proof.desc3">Kullanıcılarımızdan gelen harika yorumların ortalaması.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section-padding" style="overflow: hidden; padding-bottom: 60px;" aria-labelledby="testimonials-title">
+        <div class="section-header rv" style="margin-bottom: 60px;">
+            <h2 id="testimonials-title" style="font-size: clamp(2.8rem, 5vw, 4.5rem);" data-i18n="test.title">Topluluğumuzun <em>Sesleri.</em>
+            </h2>
+            <p data-i18n="test.sub">Onların hikayeleri, Cotidie'nin gerçek gücünü anlatıyor.</p>
+        </div>
+
+        <!-- Infinite Scrolling Scroller -->
+        <div class="testimonials-scroller rv d1">
+            <div class="testimonials-track">
+
+                <!-- Card 1 -->
+                <div class="test-card">
+                    <div class="test-quote-ic">"</div>
+                    <div class="test-stars">★★★★★</div>
+                    <p class="test-body" data-i18n="test.1.body">Eskiden günlük yazmaya üşenirdim. Cotidie'nin bana
+                        sorduğu akıllı sorular beni kendi içime çekiyor. İnanılmaz bir deneyim.</p>
+                    <div class="test-author">
+                        <div class="ta-av">E</div>
+                        <div class="ta-info">
+                            <h5>Emre O.</h5>
+                            <p data-i18n="test.1.type">Premium Üye</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="test-card">
+                    <div class="test-quote-ic">"</div>
+                    <div class="test-stars">★★★★★</div>
+                    <p class="test-body" data-i18n="test.2.body">Arayüzdeki renkler, karanlık mod... Her şey o kadar
+                        premium hissettiriyor ki her gün açmak istiyorum.</p>
+                    <div class="test-author">
+                        <div class="ta-av">N</div>
+                        <div class="ta-info">
+                            <h5>Nisa B.</h5>
+                            <p data-i18n="test.1.type">Premium Üye</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="test-card">
+                    <div class="test-quote-ic">"</div>
+                    <div class="test-stars">★★★★★</div>
+                    <p class="test-body" data-i18n="test.3.body">Düşüncelerimi sadece yazıya dökmekle kalmıyorum,
+                        geçmişimle konuşabiliyorum. Yıllık plan sonuna kadar hak ediyor.</p>
+                    <div class="test-author">
+                        <div class="ta-av">E</div>
+                        <div class="ta-info">
+                            <h5>Emir S.</h5>
+                            <p data-i18n="test.1.type">Premium Üye</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="test-card">
+                    <div class="test-quote-ic">"</div>
+                    <div class="test-stars">★★★★★</div>
+                    <p class="test-body" data-i18n="test.4.body">Secret Vault özelliği sayesinde uygulamanın telefonumda
+                        başkasının eline geçmesi korkusunu tamamen yendim.</p>
+                    <div class="test-author">
+                        <div class="ta-av">S</div>
+                        <div class="ta-info">
+                            <h5>Senem P.</h5>
+                            <p data-i18n="test.1.type">Premium Üye</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="test-card">
+                    <div class="test-quote-ic">"</div>
+                    <div class="test-stars">★★★★★</div>
+                    <p class="test-body" data-i18n="test.5.body">Geceleri çok yorgun olduğumda sadece sesli dikteye
+                        konuşuyorum. O kadar kusursuz aktarıyor ki, sanki beni anlıyor.</p>
+                    <div class="test-author">
+                        <div class="ta-av">K</div>
+                        <div class="ta-info">
+                            <h5>Kerem K.</h5>
+                            <p data-i18n="test.1.type">Premium Üye</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DUPES FOR INFINITE SCROLL -->
+                <div class="test-card">
+                    <div class="test-quote-ic">"</div>
+                    <div class="test-stars">★★★★★</div>
+                    <p class="test-body" data-i18n="test.1.body">Eskiden günlük yazmaya üşenirdim. Cotidie'nin bana
+                        sorduğu akıllı sorular beni kendi içime çekiyor. İnanılmaz bir deneyim.</p>
+                    <div class="test-author">
+                        <div class="ta-av">E</div>
+                        <div class="ta-info">
+                            <h5>Emre O.</h5>
+                            <p data-i18n="test.1.type">Premium Üye</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <div class="test-quote-ic">"</div>
+                    <div class="test-stars">★★★★★</div>
+                    <p class="test-body" data-i18n="test.2.body">Arayüzdeki renkler, karanlık mod... Her şey o kadar
+                        premium hissettiriyor ki her gün açmak istiyorum.</p>
+                    <div class="test-author">
+                        <div class="ta-av">N</div>
+                        <div class="ta-info">
+                            <h5>Nisa B.</h5>
+                            <p data-i18n="test.1.type">Premium Üye</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <div class="test-quote-ic">"</div>
+                    <div class="test-stars">★★★★★</div>
+                    <p class="test-body" data-i18n="test.3.body">Düşüncelerimi sadece yazıya dökmekle kalmıyorum,
+                        geçmişimle konuşabiliyorum. Yıllık plan sonuna kadar hak ediyor.</p>
+                    <div class="test-author">
+                        <div class="ta-av">E</div>
+                        <div class="ta-info">
+                            <h5>Emir S.</h5>
+                            <p data-i18n="test.1.type">Premium Üye</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="section-padding container" aria-labelledby="pricing-title">
+        <div class="section-header rv">
+            <h2 id="pricing-title" data-i18n="pricing.title">Sınırları <em>kaldırın.</em></h2>
+            <p data-i18n="pricing.subtitle">Yazarak keşfet, AI ile derinleş. Sınırları kaldır, tam deneyimi aç.</p>
+        </div>
+
+        <div class="pricing-grid">
+
+            <!-- Monthly Plan -->
+            <div class="price-card rv left">
+                <div class="pop-sub" data-i18n="pricing.monthly.badge">İNDİRİMLİ</div>
+                <div class="p-name" data-i18n="pricing.monthly.name">Aylık Plan</div>
+
+                <div
+                    style="text-decoration: line-through; color: rgba(255,255,255,0.4); font-size: 1.1rem; margin-bottom: -10px;">
+                    <span class="cur">₺</span><span data-i18n="pricing.monthly.normal">99,99</span></div>
+                <div class="p-amt"><span class="cur">₺</span><span data-i18n="pricing.monthly.price">79,99</span></div>
+                <div class="p-per" data-i18n="pricing.monthly.per">İstediğin an iptal.</div>
+
+                <ul class="p-list">
+                    <li><span class="picon">✓</span> <span data-i18n="pricing.features.ai">Sınırsız AI Sohbeti</span>
+                    </li>
+                    <li><span class="picon">✓</span> <span data-i18n="pricing.features.vault">Secret Vault
+                            Erişimi</span></li>
+                    <li><span class="picon">✓</span> <span data-i18n="pricing.features.analysis">Derin Duygu
+                            Analizi</span></li>
+                    <li><span class="picon">✓</span> <span data-i18n="pricing.features.tools">Premium Yaratıcı
+                            Araçlar</span></li>
+                    <li><span class="picon">✓</span> <span data-i18n="pricing.features.dictation">Sınırsız Sesli
+                            Dikte</span></li>
+                </ul>
+                <a href="#download" class="btn btn-outline" data-i18n="pricing.cta">7 Gün Ücretsiz Başla</a>
+            </div>
+
+            <!-- Annual Plan -->
+            <div class="price-card premium rv right">
+                <div class="popular-badge" data-i18n="pricing.annual.badge">EN POPÜLER · %41 TASARRUF</div>
+                <div class="p-name" data-i18n="pricing.annual.name">Yıllık Plan</div>
+
+                <div
+                    style="text-decoration: line-through; color: rgba(255,255,255,0.4); font-size: 1.1rem; margin-bottom: -10px;">
+                    <span class="cur">₺</span><span data-i18n="pricing.annual.normal">1200</span></div>
+                <div class="p-amt"><span class="cur">₺</span><em data-i18n="pricing.annual.price">699,99</em></div>
+                <div class="p-per"><span data-i18n="pricing.annual.per">Yıllık faturalandırılır (Aylık 33₺'ye denk
+                        gelir)</span></div>
+
+                <div class="p-div"></div>
+
+                <ul class="p-list">
+                    <li><span class="picon">✓</span> <span data-i18n="pricing.features.ai">Sınırsız AI Sohbeti</span>
+                    </li>
+                    <li><span class="picon">✓</span> <span data-i18n="pricing.features.vault">Secret Vault
+                            Erişimi</span></li>
+                    <li><span class="picon">✓</span> <span data-i18n="pricing.features.analysis">Derin Duygu
+                            Analizi</span></li>
+                    <li><span class="picon">✓</span> <span data-i18n="pricing.features.tools">Premium Yaratıcı
+                            Araçlar</span></li>
+                    <li><span class="picon">✓</span> <span data-i18n="pricing.features.dictation">Sınırsız Sesli
+                            Dikte</span></li>
+                    <li><span class="picon" style="color: var(--primary);">✦</span> <span style="color: var(--primary);"
+                            data-i18n="pricing.features.priority">Öncelikli Yeni Özellikler</span></li>
+                </ul>
+                <a href="#download" class="btn btn-primary" data-i18n="pricing.cta_annual">7 Gün Ücretsiz Başla</a>
+            </div>
+        </div>
+
+        <!-- Pricing Comparison Table -->
+        <div class="pricing-compare rv d1">
+            <h3 data-i18n="compare.title" class="compare-title">Planları Karşılaştırın</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="th-feature"></th>
+                            <th class="th-free" data-i18n="compare.free">Ücretsiz Plan</th>
+                            <th class="th-premium" data-i18n="compare.premium">Premium Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td-feature" data-i18n="compare.feature.core">Temel Günlük Yazımı</td>
+                            <td class="td-icon">✓</td>
+                            <td class="td-icon premium-check">✓</td>
+                        </tr>
+                        <tr>
+                            <td class="td-feature" data-i18n="compare.feature.mood">Günlük Ruh Hali Takibi</td>
+                            <td class="td-icon">✓</td>
+                            <td class="td-icon premium-check">✓</td>
+                        </tr>
+                        <tr>
+                            <td class="td-feature" data-i18n="compare.feature.pin">Pin & Biyometrik Kilit</td>
+                            <td class="td-icon">✓</td>
+                            <td class="td-icon premium-check">✓</td>
+                        </tr>
+                        <tr>
+                            <td class="td-feature" data-i18n="compare.feature.basic_stat">Temel İstatistikler</td>
+                            <td class="td-icon">✓</td>
+                            <td class="td-icon premium-check">✓</td>
+                        </tr>
+                        <tr>
+                            <td class="td-feature" data-i18n="compare.feature.analysis">Detaylı Duygu Analizi</td>
+                            <td class="td-icon cross">−</td>
+                            <td class="td-icon premium-check">✓</td>
+                        </tr>
+                        <tr>
+                            <td class="td-feature" data-i18n="compare.feature.chat">Sınırsız AI Sohbeti</td>
+                            <td class="td-icon cross">−</td>
+                            <td class="td-icon premium-check">✓</td>
+                        </tr>
+                        <tr>
+                            <td class="td-feature" data-i18n="compare.feature.vault">Şifreli Kasa</td>
+                            <td class="td-icon cross">−</td>
+                            <td class="td-icon premium-check">✓</td>
+                        </tr>
+                        <tr>
+                            <td class="td-feature" data-i18n="compare.feature.tools">Premium Yaratıcı Araçlar</td>
+                            <td class="td-icon cross">−</td>
+                            <td class="td-icon premium-check">✓</td>
+                        </tr>
+                        <tr>
+                            <td class="td-feature" data-i18n="compare.feature.voice">Sesli Dikte</td>
+                            <td class="td-icon cross">−</td>
+                            <td class="td-icon premium-check">✓</td>
+                        </tr>
+                        <tr>
+                            <td class="td-feature" data-i18n="compare.feature.priority">Öncelikli Yeni Özellikler</td>
+                            <td class="td-icon cross">−</td>
+                            <td class="td-icon premium-check">✦</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="fcta-section container" id="download" aria-label="İndirme">
+        <div class="fcta-card rv scale">
+            <span class="kicker" data-i18n="fcta.kicker">Geç Kalmadan</span>
+            <h2 data-i18n="fcta.title">Kendi hikayenizi<br>yazmaya başlayın.</h2>
+            <p data-i18n="fcta.desc">Cotidie, uygulamanın ötesindedir. Sizi gerçekten dinleyen ve gizliliğinize en üst
+                düzeyde önem veren bir sırdaştır.</p>
+
+            <div class="hero-actions" style="justify-content: center;">
+                <a href="#" class="store-badge" aria-label="App Store'dan İndir">
+                    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                        alt="Download on the App Store" width="120" height="40" loading="lazy">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    </main><!-- /main-content -->
+
+    <!-- Footer -->
+    <footer role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="logo">
+                        <div class="logo-icon"></div>
+                        Cotidie
+                    </div>
+                    <p class="fb-desc" data-i18n="footer.desc">The Living Liquid AI Journal.<br>Zihniniz için premium
+                        yazılım.</p>
+                </div>
+
+                <div class="fc">
+                    <h5 data-i18n="footer.prod">Ürün</h5>
+                    <a href="#features" data-i18n="nav.features">Özellikler</a>
+                    <a href="#pricing" data-i18n="nav.premium">Premium</a>
+                    <a href="#" data-i18n="nav.download">İndir</a>
+                </div>
+
+                <div class="fc">
+                    <h5 data-i18n="footer.legal">Legal</h5>
+                    <a href="terms.html" data-i18n="footer.terms">Kullanım Koşulları</a>
+                    <a href="privacy-policy.html" data-i18n="footer.privacy">Gizlilik Politikası</a>
+                </div>
+
+                <div class="fc">
+                    <h5 data-i18n="footer.support">Destek</h5>
+                    <a href="support.html" data-i18n="footer.help">Yardım Merkezi</a>
+                    <a href="mailto:hello@Cotidie.app" data-i18n="footer.contact">İletişim</a>
+                </div>
+            </div>
+
+            <div class="footer-bot">
+                <p>&copy; <span id="footerYear">2026</span> Cotidie.</p>
+                <div style="display: flex; gap: 24px;">
+                    <a href="#" aria-label="Cotidie Instagram">Instagram</a>
+                    <a href="#" aria-label="Cotidie Twitter">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>

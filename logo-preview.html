@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotidie — Logo Tasarım Konseptleri</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #1A1816;
+            --surface: #252220;
+            --primary: #E8A87C;
+            --secondary: #85B79D;
+            --accent: #C9A9A6;
+            --gold: #D4AF37;
+            --text: #FAF7F2;
+            --text-body: #D4CEC4;
+            --text-muted: #8A847C;
+            --border: rgba(250, 247, 242, 0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Syne', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 32px; }
+
+        /* HERO */
+        .hero {
+            text-align: center;
+            padding: 80px 0 40px;
+            position: relative;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px; left: 50%; transform: translateX(-50%);
+            width: 800px; height: 600px;
+            background: radial-gradient(circle, rgba(232,168,124,0.12), transparent 60%);
+            pointer-events: none;
+        }
+        .hero-tag {
+            display: inline-flex; align-items: center; gap: 12px;
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 0.16em;
+            text-transform: uppercase; color: var(--primary); margin-bottom: 24px;
+        }
+        .hero-tag::before { content: ''; width: 32px; height: 1px; background: var(--primary); opacity: 0.6; }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.4rem, 5vw, 3.5rem);
+            font-weight: 400; color: var(--text);
+            margin-bottom: 16px; letter-spacing: -0.02em;
+        }
+        h1 em { font-style: normal; color: var(--primary); font-weight: 600; }
+        .hero p { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+
+        /* SECTION */
+        .section { padding: 60px 0; border-top: 1px solid var(--border); }
+        .section-header {
+            display: flex; align-items: center; gap: 16px;
+            margin-bottom: 40px;
+        }
+        .section-num {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: rgba(232,168,124,0.1); border: 1px solid rgba(232,168,124,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Cormorant Garamond', serif; font-size: 1.4rem;
+            color: var(--primary); font-weight: 600; flex-shrink: 0;
+        }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem; color: var(--text); font-weight: 400;
+        }
+        .section-title em { font-style: normal; color: var(--primary); }
+
+        /* LOGO CARD */
+        .logo-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            overflow: hidden;
+            margin-bottom: 32px;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
+        }
+        .logo-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(232,168,124,0.2);
+        }
+        .logo-card img {
+            width: 100%; display: block;
+            background: var(--bg);
+        }
+        .logo-card-info {
+            padding: 32px;
+        }
+        .logo-card-info h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem; color: var(--text);
+            margin-bottom: 12px; font-weight: 500;
+        }
+        .logo-card-info p {
+            font-size: 0.95rem; color: var(--text-muted); line-height: 1.7;
+        }
+        .logo-card-tag {
+            display: inline-block; padding: 4px 12px; border-radius: 100px;
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+            text-transform: uppercase; margin-bottom: 12px;
+        }
+        .tag-primary { background: rgba(232,168,124,0.12); color: var(--primary); border: 1px solid rgba(232,168,124,0.2); }
+        .tag-gradient { background: rgba(133,183,157,0.12); color: var(--secondary); border: 1px solid rgba(133,183,157,0.2); }
+        .tag-icon { background: rgba(212,175,55,0.12); color: var(--gold); border: 1px solid rgba(212,175,55,0.2); }
+
+        /* COLOR PALETTE */
+        .palette {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+            margin: 32px 0;
+        }
+        .palette-item {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 20px; padding: 20px; text-align: center;
+            transition: transform 0.3s;
+        }
+        .palette-item:hover { transform: translateY(-2px); }
+        .color-swatch {
+            width: 56px; height: 56px; border-radius: 16px;
+            margin: 0 auto 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .color-name { font-size: 0.8rem; color: var(--text); font-weight: 600; margin-bottom: 4px; }
+        .color-hex { font-size: 0.75rem; color: var(--text-muted); font-family: monospace; }
+
+        /* ANALYSIS TABLE */
+        .analysis-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+            margin: 32px 0;
+        }
+        .analysis-item {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 20px; padding: 24px;
+        }
+        .analysis-label {
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.12em; color: var(--primary); margin-bottom: 8px;
+        }
+        .analysis-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem; color: var(--text);
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center; padding: 60px 0 40px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted); font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .palette { grid-template-columns: repeat(2, 1fr); }
+            .analysis-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- HERO -->
+        <div class="hero">
+            <span class="hero-tag">Profesyonel Logo Tasarımı</span>
+            <h1>Cotidie <em>Marka Kimliği</em></h1>
+            <p>"Living Liquid" tasarım felsefesine ve uygulamanın gerçek renk paletine dayalı, uzman düzeyinde logo konseptleri.</p>
+        </div>
+
+        <!-- BRAND ANALYSIS -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">I</div>
+                <div class="section-title">Derin <em>Marka Analizi</em></div>
+            </div>
+
+            <p style="margin-bottom: 24px;">
+                Logo tasarımı öncesinde <code>CotidieTheme.ts</code> dosyasından uygulamanın gerçek renk sistemi
+                detaylı şekilde incelendi. Aşağıda kullanılan renk paleti:
+            </p>
+
+            <div class="palette">
+                <div class="palette-item">
+                    <div class="color-swatch" style="background: #E8A87C;"></div>
+                    <div class="color-name">Primary</div>
+                    <div class="color-hex">#E8A87C</div>
+                    <div style="font-size:0.65rem; color: var(--text-muted); margin-top:4px;">Soft Terracotta</div>
+                </div>
+                <div class="palette-item">
+                    <div class="color-swatch" style="background: #85B79D;"></div>
+                    <div class="color-name">Secondary</div>
+                    <div class="color-hex">#85B79D</div>
+                    <div style="font-size:0.65rem; color: var(--text-muted); margin-top:4px;">Calming Sage</div>
+                </div>
+                <div class="palette-item">
+                    <div class="color-swatch" style="background: #C9A9A6;"></div>
+                    <div class="color-name">Accent</div>
+                    <div class="color-hex">#C9A9A6</div>
+                    <div style="font-size:0.65rem; color: var(--text-muted); margin-top:4px;">Dusty Rose</div>
+                </div>
+                <div class="palette-item">
+                    <div class="color-swatch" style="background: #D4AF37;"></div>
+                    <div class="color-name">Tertiary</div>
+                    <div class="color-hex">#D4AF37</div>
+                    <div style="font-size:0.65rem; color: var(--text-muted); margin-top:4px;">Antique Gold</div>
+                </div>
+            </div>
+
+            <div class="analysis-grid">
+                <div class="analysis-item">
+                    <div class="analysis-label">Tasarım Dili</div>
+                    <div class="analysis-value">Living Liquid — Organik, akışkan, canlı</div>
+                </div>
+                <div class="analysis-item">
+                    <div class="analysis-label">Tipografi</div>
+                    <div class="analysis-value">Georgia (serif) + System UI (sans)</div>
+                </div>
+                <div class="analysis-item">
+                    <div class="analysis-label">Arka Plan</div>
+                    <div class="analysis-value">#1A1816 — Sıcak kömür (saf siyah değil)</div>
+                </div>
+                <div class="analysis-item">
+                    <div class="analysis-label">Gradient Akışı</div>
+                    <div class="analysis-value">Terracotta → Rose → Sage → Gold</div>
+                </div>
+                <div class="analysis-item">
+                    <div class="analysis-label">Marka Kişiliği</div>
+                    <div class="analysis-value">Premium, organik, sıcak, güvenli</div>
+                </div>
+                <div class="analysis-item">
+                    <div class="analysis-label">Hedef Kitle</div>
+                    <div class="analysis-value">Bilinçli, premium arayan, gizlilik odaklı</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT A -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">A</div>
+                <div class="section-title">Terracotta <em>Primary</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/logo_terracotta_primary_1774096492780.png" alt="Cotidie Terracotta Logo">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ANA LOGO</span>
+                    <h3>Sıcak Terracotta Konsepti</h3>
+                    <p>
+                        Uygulamanın birincil rengi <strong>#E8A87C</strong> (Soft Terracotta/Amber) odaklı.
+                        Logomark, bir günlük sayfasının açılışı ile akan sıvı bir damlanın birleşimini temsil eder.
+                        Sıcak, organik ve zamansız. Web sitesi, App Store görselleri ve resmi belgeler için ideal.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT B -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">B</div>
+                <div class="section-title">Living Liquid <em>İridesans</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/logo_living_liquid_gradient_1774096507180.png" alt="Cotidie Living Liquid Logo">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-gradient">LİVİNG LİQUİD</span>
+                    <h3>Üç Renkli Gradient Konsepti</h3>
+                    <p>
+                        Uygulamanın iridescent gradient sistemi kullanılarak tasarlandı:
+                        <strong>Terracotta (#E8A87C)</strong> → <strong>Dusty Rose (#C9A9A6)</strong> → <strong>Sage (#85B79D)</strong>.
+                        "Living Liquid" felsefesinin logoya yansıması. Organik, canlı ve premium.
+                        Pazarlama materyalleri ve sosyal medya için mükemmel.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROFESYONEL ALTERNATİFLER HEADER -->
+        <div class="section" style="border-top: 2px solid rgba(232,168,124,0.3);">
+            <div style="text-align:center; margin-bottom: 48px;">
+                <span class="hero-tag">21 Logo Analizi Sonucu</span>
+                <h1 style="font-size: 2rem;">Profesyonel <em>Alternatifler</em></h1>
+                <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 700px; margin: 12px auto 0;">
+                    Gönderdiğiniz 21 logonun güçlü yönleri analiz edildi. En başarılı öğeler birleştirilerek
+                    5 yeni üstün konsept üretildi.
+                </p>
+            </div>
+
+            <div class="analysis-grid">
+                <div class="analysis-item">
+                    <div class="analysis-label">En İyi C Harfi</div>
+                    <div class="analysis-value">#19 — 3D Liquid Ribbon C</div>
+                </div>
+                <div class="analysis-item">
+                    <div class="analysis-label">En İyi Hikaye</div>
+                    <div class="analysis-value">#8 — Liquid Book + Damla</div>
+                </div>
+                <div class="analysis-item">
+                    <div class="analysis-label">En Benzersiz</div>
+                    <div class="analysis-value">#16 — Parmak İzi (Kişisellik)</div>
+                </div>
+                <div class="analysis-item">
+                    <div class="analysis-label">En Organik</div>
+                    <div class="analysis-value">#18 — Hayat Ağacı</div>
+                </div>
+                <div class="analysis-item">
+                    <div class="analysis-label">En İyi Metafor</div>
+                    <div class="analysis-value">#12, #20 — Kalem + Sıvı Akış</div>
+                </div>
+                <div class="analysis-item">
+                    <div class="analysis-label">En Sade</div>
+                    <div class="analysis-value">#5, #7 — Kaligrafi C</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRO 1 -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num" style="background: rgba(212,175,55,0.15); border-color: rgba(212,175,55,0.3); color: var(--gold);">★</div>
+                <div class="section-title">Pro 1 — 3D Liquid <em>Silk C</em></div>
+            </div>
+            <div class="logo-card">
+                <img src="assets/images/pro_logo_liquid_c_1774098473317.png" alt="Pro Logo Liquid C">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-icon">PROFESYONEL ALTERNATİF</span>
+                    <h3>3D Sıvı İpek C Harfi</h3>
+                    <p>
+                        <strong>İlham:</strong> #19 (3D Ribbon C) + #7 (Brushstroke C) birleşimi.<br>
+                        <strong>Konsept:</strong> "C" harfi, akan sıvı ipek şeritlerinden oluşuyor. Terracotta → Gold gradient ile
+                        sage green aksanı. "Living Liquid" tasarım dilinin doğrudan logoya yansıması.<br>
+                        <strong>Kullanım:</strong> App icon, favicon, sosyal medya profili.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRO 2 -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num" style="background: rgba(212,175,55,0.15); border-color: rgba(212,175,55,0.3); color: var(--gold);">★</div>
+                <div class="section-title">Pro 2 — Living Liquid <em>Quill</em></div>
+            </div>
+            <div class="logo-card">
+                <img src="assets/images/pro_logo_quill_final_1774098808383.png" alt="Pro Logo Quill">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-icon">PROFESYONEL ALTERNATİF</span>
+                    <h3>Sıvı Kalem Konsepti</h3>
+                    <p>
+                        <strong>İlham:</strong> #2 (Crescent Feather) + #12 (Liquid Pen) + #20 (Flowing Nib).<br>
+                        <strong>Konsept:</strong> Tüy kalem ucu, katıdan sıvıya dönüşüyor — düşüncelerin yazıya akışını simgeliyor.
+                        Terracotta → Rose → Sage gradient. Günlük yazma ritüelinin poetik temsili.<br>
+                        <strong>Kullanım:</strong> Ana logomark, App Store görselleri.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRO 3 -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num" style="background: rgba(212,175,55,0.15); border-color: rgba(212,175,55,0.3); color: var(--gold);">★</div>
+                <div class="section-title">Pro 3 — Journal <em>Rising Drop</em></div>
+            </div>
+            <div class="logo-card">
+                <img src="assets/images/pro_logo_journal_drop_v2_1774098911810.png" alt="Pro Logo Journal Drop">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-icon">PROFESYONEL ALTERNATİF</span>
+                    <h3>Günlük + Yükselen Damla</h3>
+                    <p>
+                        <strong>İlham:</strong> #8 (Liquid Book) — en güçlü hikaye anlatımı.<br>
+                        <strong>Konsept:</strong> Açık günlükten yükselen 3D iridescent damla. Düşüncelerin
+                        sayfalardan hayata geçmesini simgeliyor. İç gözlemin dışa akış metaforu.<br>
+                        <strong>Kullanım:</strong> Pazarlama materyalleri, web sitesi hero.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRO 4 -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num" style="background: rgba(212,175,55,0.15); border-color: rgba(212,175,55,0.3); color: var(--gold);">★</div>
+                <div class="section-title">Pro 4 — Identity <em>Fingerprint C</em></div>
+            </div>
+            <div class="logo-card">
+                <img src="assets/images/pro_logo_fingerprint_c_1774098927200.png" alt="Pro Logo Fingerprint">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-icon">PROFESYONEL ALTERNATİF</span>
+                    <h3>Parmak İzi C Konsepti</h3>
+                    <p>
+                        <strong>İlham:</strong> #16 (Fingerprint) — en benzersiz ve kişisel kavram.<br>
+                        <strong>Konsept:</strong> Parmak izi çizgileri C harfi formunda, 3D metalik sıvı olarak render edilmiş.
+                        "Her günlük girişin senin benzersiz izin" mesajı. Kişisellik + gizlilik vurgusu.<br>
+                        <strong>Kullanım:</strong> App icon, güvenlik/gizlilik vurgulu pazarlama.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRO 5 -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num" style="background: rgba(212,175,55,0.15); border-color: rgba(212,175,55,0.3); color: var(--gold);">★</div>
+                <div class="section-title">Pro 5 — Crescent <em>Moon + Quill</em></div>
+            </div>
+            <div class="logo-card">
+                <img src="assets/images/pro_logo_crescent_pen_1774098940763.png" alt="Pro Logo Crescent">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-icon">PROFESYONEL ALTERNATİF</span>
+                    <h3>Hilal Ay + Tüy Kalem</h3>
+                    <p>
+                        <strong>İlham:</strong> #2 (Moon + Feather) — en atmosferik konsept.<br>
+                        <strong>Konsept:</strong> Sıvı terracotta-gold hilal ay formu + çapraz geçen ince tüy kalem.
+                        Buluşma noktasında parlayan sage green nokta. "Cotidie" = "her gün" — ayın günlük döngüsü
+                        ile günlük yazma ritüelinin birleşimi.<br>
+                        <strong>Kullanım:</strong> App icon, gece modu varyasyonu.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KULLANICI LOGOLARI AYIRICI -->
+        <div class="section" style="border-top: 2px solid rgba(232,168,124,0.3);">
+            <div style="text-align:center; margin-bottom: 16px;">
+                <span class="hero-tag">Referans Koleksiyonu</span>
+                <h1 style="font-size: 1.8rem;">Kullanıcı <em>Logoları</em></h1>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Analiz için gönderilen orijinal 21 konsept</p>
+            </div>
+        </div>
+
+        <!-- KONSEPT C -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">C</div>
+                <div class="section-title">App Icon <em>Final</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/logo_app_icon_final_1774096519370.png" alt="Cotidie App Icon">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-icon">APP ICON</span>
+                    <h3>iOS/Android Uygulama İkonu</h3>
+                    <p>
+                        Dört renkli tam iridescent gradient:
+                        <strong>Terracotta → Dusty Rose → Sage → Antique Gold</strong>.
+                        29x29px'den 1024x1024px'e kadar her boyutta okunabilir ve tanınabilir.
+                        Apple Human Interface Guidelines'a uyumlu premium app icon.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT D -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">D</div>
+                <div class="section-title">Kullanıcı Konsepti <em>1</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_1.png" alt="User Logo 1">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 1</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan birinci logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT E -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">E</div>
+                <div class="section-title">Kullanıcı Konsepti <em>2</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_2.png" alt="User Logo 2">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 2</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan ikinci logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT F -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">F</div>
+                <div class="section-title">Kullanıcı Konsepti <em>3</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_3.png" alt="User Logo 3">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 3</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan üçüncü logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT G -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">G</div>
+                <div class="section-title">Kullanıcı Konsepti <em>4</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_4.png" alt="User Logo 4">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 4</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan dördüncü logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT H -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">H</div>
+                <div class="section-title">Kullanıcı Konsepti <em>5</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_5.png" alt="User Logo 5">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-icon">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 5 (İkon)</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan beşinci logo konsepti. İkon kullanımına uygun yapı.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT I -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">I</div>
+                <div class="section-title">Kullanıcı Konsepti <em>6</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_6.png" alt="User Logo 6">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 6</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan altıncı logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT J -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">J</div>
+                <div class="section-title">Kullanıcı Konsepti <em>7</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_7.png" alt="User Logo 7">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 7</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan yedinci logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT K -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">K</div>
+                <div class="section-title">Kullanıcı Konsepti <em>8</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_8.png" alt="User Logo 8">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 8</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan sekizinci logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT L -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">L</div>
+                <div class="section-title">Kullanıcı Konsepti <em>9</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_9.png" alt="User Logo 9">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 9</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan dokuzuncu logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT M -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">M</div>
+                <div class="section-title">Kullanıcı Konsepti <em>10</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_10.png" alt="User Logo 10">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-icon">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 10</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan onuncu logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT N -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">N</div>
+                <div class="section-title">Kullanıcı Konsepti <em>11</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_11.png" alt="User Logo 11">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 11</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan on birinci logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT O -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">O</div>
+                <div class="section-title">Kullanıcı Konsepti <em>12</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_12.png" alt="User Logo 12">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 12</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan on ikinci logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT P -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">P</div>
+                <div class="section-title">Kullanıcı Konsepti <em>13</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_13.png" alt="User Logo 13">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 13</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan on üçüncü logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT Q -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">Q</div>
+                <div class="section-title">Kullanıcı Konsepti <em>14</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_14.png" alt="User Logo 14">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 14</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan on dördüncü logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT R -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">R</div>
+                <div class="section-title">Kullanıcı Konsepti <em>15</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_15.png" alt="User Logo 15">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-icon">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 15</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan on beşinci logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT S -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">S</div>
+                <div class="section-title">Kullanıcı Konsepti <em>16</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_16.png" alt="User Logo 16">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 16</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan on altıncı logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT T -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">T</div>
+                <div class="section-title">Kullanıcı Konsepti <em>17</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_17.png" alt="User Logo 17">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 17</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan on yedinci logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT U -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">U</div>
+                <div class="section-title">Kullanıcı Konsepti <em>18</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_18.jpg" alt="User Logo 18">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 18</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan on sekizinci logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT V -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">V</div>
+                <div class="section-title">Kullanıcı Konsepti <em>19</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_19.png" alt="User Logo 19">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 19</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan on dokuzuncu logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT W -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">W</div>
+                <div class="section-title">Kullanıcı Konsepti <em>20</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_20.png" alt="User Logo 20">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-icon">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 20</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan yirminci logo konsepti. (Aydınlık Konsept)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KONSEPT X -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-num">X</div>
+                <div class="section-title">Kullanıcı Konsepti <em>21</em></div>
+            </div>
+
+            <div class="logo-card">
+                <img src="assets/images/user_logo_21.png" alt="User Logo 21">
+                <div class="logo-card-info">
+                    <span class="logo-card-tag tag-primary">ÖZEL TASARIM</span>
+                    <h3>Kullanıcı Tasarımı 21</h3>
+                    <p>
+                        Kullanıcı tarafından sağlanan yirmi birinci logo konsepti.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>Cotidie — Profesyonel Logo Tasarım Sunumu</p>
+            <p style="margin-top: 8px; font-size: 0.75rem;">Renkler CotidieTheme.ts'den alınmıştır • Living Liquid Design System v3.0</p>
+        </div>
+
+    </div>
+</body>
+</html>

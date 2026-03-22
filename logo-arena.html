@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotidie Logo Arena — Turnuva & Değerlendirme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --bg: #0D0B0A;
+            --surface: #161311;
+            --surface2: #1E1A17;
+            --border: rgba(232,168,124,0.08);
+            --border2: rgba(232,168,124,0.15);
+            --primary: #E8A87C;
+            --secondary: #85B79D;
+            --accent: #C9A9A6;
+            --gold: #D4AF37;
+            --text: #F2EDE8;
+            --text-muted: #8A817A;
+            --red: #E87C7C;
+            --green: #7CE8A8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* NAV */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(13,11,10,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 32px; gap: 16px;
+        }
+        .nav-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem; font-weight: 600; color: var(--primary);
+            white-space: nowrap;
+        }
+        .nav-tabs { display: flex; gap: 4px; }
+        .nav-tab {
+            padding: 8px 18px; border-radius: 100px;
+            font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em;
+            background: transparent; border: 1px solid transparent;
+            color: var(--text-muted); cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nav-tab:hover { color: var(--text); background: var(--surface); }
+        .nav-tab.active {
+            background: rgba(232,168,124,0.12);
+            border-color: rgba(232,168,124,0.2);
+            color: var(--primary);
+        }
+        .nav-user {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.8rem; color: var(--text-muted);
+        }
+        .nav-user strong { color: var(--primary); }
+
+        /* MAIN */
+        .main { padding: 80px 32px 40px; max-width: 1200px; margin: 0 auto; }
+
+        /* PAGE */
+        .page { display: none; animation: fadeIn 0.4s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* LOGIN */
+        .login-page {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            min-height: 80vh; text-align: center;
+        }
+        .login-page h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem; font-weight: 400; margin-bottom: 12px;
+        }
+        .login-page h1 em { font-style: normal; color: var(--primary); font-weight: 600; }
+        .login-page p { color: var(--text-muted); margin-bottom: 40px; max-width: 500px; }
+        .login-input {
+            width: 320px; padding: 16px 24px;
+            background: var(--surface); border: 1px solid var(--border2);
+            border-radius: 16px; color: var(--text);
+            font-family: 'Inter', sans-serif; font-size: 1rem;
+            outline: none; text-align: center;
+            transition: border-color 0.3s;
+        }
+        .login-input:focus { border-color: var(--primary); }
+        .login-input::placeholder { color: var(--text-muted); }
+        .login-btn {
+            margin-top: 16px; padding: 14px 48px;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            border: none; border-radius: 100px;
+            color: var(--bg); font-weight: 700; font-size: 0.9rem;
+            cursor: pointer; letter-spacing: 0.06em;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .login-btn:hover { transform: scale(1.05); box-shadow: 0 8px 32px rgba(232,168,124,0.3); }
+
+        /* SECTION TITLE */
+        .section-title-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 32px; flex-wrap: wrap; gap: 12px;
+        }
+        .section-title-bar h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem; font-weight: 400;
+        }
+        .section-title-bar h2 em { font-style: normal; color: var(--primary); font-weight: 600; }
+
+        /* FILTER PILLS */
+        .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+        .filter-pill {
+            padding: 6px 14px; border-radius: 100px;
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em;
+            border: 1px solid var(--border2); background: transparent;
+            color: var(--text-muted); cursor: pointer; transition: all 0.3s;
+        }
+        .filter-pill.active, .filter-pill:hover {
+            background: rgba(232,168,124,0.12);
+            border-color: rgba(232,168,124,0.3);
+            color: var(--primary);
+        }
+
+        /* GALLERY GRID */
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .gallery-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 20px; overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
+            position: relative;
+        }
+        .gallery-card:hover { transform: translateY(-4px); border-color: var(--border2); }
+        .gallery-card img {
+            width: 100%; aspect-ratio: 1; object-fit: cover;
+            display: block; background: var(--bg);
+        }
+        .gallery-card-info { padding: 16px; }
+        .gallery-card-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem; font-weight: 500; margin-bottom: 4px;
+        }
+        .gallery-card-cat {
+            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--gold); margin-bottom: 8px;
+        }
+        .gallery-card-badge {
+            position: absolute; top: 12px; right: 12px;
+            padding: 4px 10px; border-radius: 100px;
+            font-size: 0.6rem; font-weight: 700;
+            background: rgba(212,175,55,0.2); color: var(--gold);
+            border: 1px solid rgba(212,175,55,0.3);
+            backdrop-filter: blur(8px);
+        }
+
+        /* STARS */
+        .stars { display: flex; gap: 4px; }
+        .star {
+            width: 28px; height: 28px; cursor: pointer;
+            color: var(--text-muted); transition: all 0.2s;
+            font-size: 1.2rem; line-height: 28px; text-align: center;
+        }
+        .star:hover, .star.filled { color: var(--gold); transform: scale(1.15); }
+        .star.filled { text-shadow: 0 0 12px rgba(212,175,55,0.5); }
+        .avg-rating {
+            font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;
+        }
+        .avg-rating strong { color: var(--gold); font-size: 0.9rem; }
+
+        /* TOURNAMENT */
+        .tournament-stage {
+            text-align: center; margin-bottom: 24px;
+        }
+        .tournament-stage h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem; font-weight: 400;
+        }
+        .tournament-stage h2 em { font-style: normal; color: var(--primary); font-weight: 600; }
+        .tournament-info {
+            display: flex; justify-content: center; gap: 24px; margin-top: 12px;
+        }
+        .tournament-info-item {
+            font-size: 0.75rem; color: var(--text-muted);
+        }
+        .tournament-info-item strong { color: var(--primary); }
+        .tournament-vs {
+            display: flex; align-items: center; justify-content: center;
+            gap: 32px; margin-top: 40px; flex-wrap: wrap;
+        }
+        .tournament-card {
+            width: 340px; background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 28px; overflow: hidden;
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+            position: relative;
+        }
+        .tournament-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(232,168,124,0.15);
+        }
+        .tournament-card.winner {
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 40px rgba(212,175,55,0.3) !important;
+        }
+        .tournament-card.loser { opacity: 0.3; transform: scale(0.95); pointer-events: none; }
+        .tournament-card img {
+            width: 100%; aspect-ratio: 1; object-fit: cover;
+            display: block;
+        }
+        .tournament-card-info {
+            padding: 20px; text-align: center;
+        }
+        .tournament-card-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; font-weight: 500;
+        }
+        .tournament-card-cat {
+            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--gold); margin-top: 4px;
+        }
+        .vs-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem; font-weight: 700;
+            color: var(--primary); opacity: 0.4;
+            flex-shrink: 0;
+        }
+        .tournament-progress {
+            margin-top: 40px; text-align: center;
+        }
+        .progress-bar {
+            width: 100%; max-width: 500px; height: 6px;
+            background: var(--surface); border-radius: 100px;
+            margin: 8px auto 0; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; border-radius: 100px;
+            background: linear-gradient(90deg, var(--primary), var(--gold));
+            transition: width 0.5s ease;
+        }
+        .progress-text { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* WINNER */
+        .winner-reveal {
+            text-align: center; padding: 60px 0;
+            animation: winnerPop 0.8s cubic-bezier(0.16,1,0.3,1);
+        }
+        @keyframes winnerPop { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        .winner-reveal h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem; color: var(--gold); margin-bottom: 24px;
+        }
+        .winner-reveal img {
+            width: 300px; height: 300px; object-fit: cover;
+            border-radius: 30px; border: 3px solid var(--gold);
+            box-shadow: 0 0 60px rgba(212,175,55,0.3);
+            margin-bottom: 24px;
+        }
+
+        /* STATS */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px; margin-bottom: 40px;
+        }
+        .stat-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 20px; padding: 24px; text-align: center;
+        }
+        .stat-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem; font-weight: 600; color: var(--primary);
+        }
+        .stat-label {
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--text-muted); margin-top: 4px;
+        }
+        .leaderboard { margin-bottom: 40px; }
+        .leaderboard-item {
+            display: flex; align-items: center; gap: 16px;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 12px 20px; margin-bottom: 8px;
+            transition: border-color 0.3s;
+        }
+        .leaderboard-item:hover { border-color: var(--border2); }
+        .leaderboard-rank {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem; font-weight: 600; flex-shrink: 0;
+            background: var(--surface2); color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+        .leaderboard-rank.gold { background: rgba(212,175,55,0.15); color: var(--gold); border-color: rgba(212,175,55,0.3); }
+        .leaderboard-rank.silver { background: rgba(192,192,192,0.1); color: #C0C0C0; border-color: rgba(192,192,192,0.2); }
+        .leaderboard-rank.bronze { background: rgba(205,127,50,0.1); color: #CD7F32; border-color: rgba(205,127,50,0.2); }
+        .leaderboard-img {
+            width: 48px; height: 48px; border-radius: 12px;
+            object-fit: cover; flex-shrink: 0;
+        }
+        .leaderboard-info { flex: 1; }
+        .leaderboard-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem; font-weight: 500;
+        }
+        .leaderboard-stats { font-size: 0.72rem; color: var(--text-muted); }
+        .leaderboard-score {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem; font-weight: 600; color: var(--gold);
+        }
+
+        /* START BTN */
+        .start-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 36px; border-radius: 100px;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            border: none; color: var(--bg); font-weight: 700;
+            font-size: 0.9rem; cursor: pointer; letter-spacing: 0.04em;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .start-btn:hover { transform: scale(1.05); box-shadow: 0 8px 32px rgba(232,168,124,0.3); }
+        .start-btn.secondary {
+            background: var(--surface); color: var(--text);
+            border: 1px solid var(--border2);
+        }
+        .start-btn.secondary:hover { border-color: var(--primary); box-shadow: none; }
+        .btn-group { display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+
+        /* HISTORY */
+        .history-table {
+            width: 100%; border-collapse: collapse; margin-top: 16px;
+        }
+        .history-table th, .history-table td {
+            padding: 12px 16px; text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+        .history-table th {
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--text-muted);
+        }
+
+        /* ADMIN */
+        .admin-logo-detail {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 20px; padding: 24px; margin-bottom: 16px;
+            display: flex; gap: 20px; align-items: flex-start;
+            transition: border-color 0.3s;
+        }
+        .admin-logo-detail:hover { border-color: var(--border2); }
+        .admin-logo-detail img {
+            width: 80px; height: 80px; border-radius: 14px;
+            object-fit: cover; flex-shrink: 0;
+        }
+        .admin-logo-detail-info { flex: 1; min-width: 0; }
+        .admin-logo-detail-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem; font-weight: 500; margin-bottom: 4px;
+        }
+        .admin-logo-detail-meta {
+            font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px;
+        }
+        .admin-user-rating {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--surface2); border: 1px solid var(--border);
+            border-radius: 10px; padding: 6px 12px; margin: 3px 4px;
+            font-size: 0.78rem;
+        }
+        .admin-user-rating .aur-name { color: var(--text); font-weight: 500; }
+        .admin-user-rating .aur-stars { color: var(--gold); letter-spacing: 1px; }
+        .admin-user-rating .aur-num { color: var(--text-muted); font-size: 0.7rem; }
+        .admin-section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 400; margin: 36px 0 16px;
+        }
+        .admin-section-title em { font-style: normal; color: var(--primary); font-weight: 600; }
+        .admin-user-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 20px; margin-bottom: 12px;
+        }
+        .admin-user-card h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem; font-weight: 500; color: var(--primary); margin-bottom: 8px;
+        }
+        .admin-user-card .auc-stat {
+            font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px;
+        }
+        .admin-no-data {
+            text-align: center; padding: 40px; color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .admin-tabs { display: flex; gap: 6px; margin-bottom: 24px; flex-wrap: wrap; }
+        .admin-tab {
+            padding: 8px 16px; border-radius: 100px;
+            font-size: 0.75rem; font-weight: 600;
+            border: 1px solid var(--border2); background: transparent;
+            color: var(--text-muted); cursor: pointer; transition: all 0.3s;
+        }
+        .admin-tab.active {
+            background: rgba(232,168,124,0.12);
+            border-color: rgba(232,168,124,0.3);
+            color: var(--primary);
+        }
+        .admin-avg-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 100px; padding: 3px 10px;
+            font-size: 0.72rem; font-weight: 700; color: var(--gold);
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 10px 16px; flex-wrap: wrap; }
+            .nav-tabs { order: 3; width: 100%; justify-content: center; }
+            .main { padding: 120px 16px 40px; }
+            .tournament-vs { gap: 16px; }
+            .tournament-card { width: 280px; }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* SWIPE */
+        .swipe-container { display:flex; flex-direction:column; align-items:center; min-height:70vh; justify-content:center; }
+        .swipe-stack { position:relative; width:340px; height:440px; margin:20px auto; }
+        .swipe-card {
+            position:absolute; top:0; left:0; width:100%; height:100%;
+            background:var(--surface); border:2px solid var(--border);
+            border-radius:28px; overflow:hidden; cursor:grab;
+            transition:transform 0.1s,opacity 0.1s; user-select:none; touch-action:none;
+        }
+        .swipe-card img { width:100%; height:320px; object-fit:cover; display:block; pointer-events:none; }
+        .swipe-card-info { padding:16px; text-align:center; pointer-events:none; }
+        .swipe-card-name { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:500; }
+        .swipe-card-cat { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--gold); margin-top:4px; }
+        .swipe-overlay {
+            position:absolute; top:0; left:0; right:0; bottom:0;
+            display:flex; align-items:center; justify-content:center;
+            font-size:5rem; font-weight:900; opacity:0; pointer-events:none;
+            border-radius:28px; transition:opacity 0.15s;
+        }
+        .swipe-overlay.like { background:rgba(124,232,168,0.15); color:var(--green); }
+        .swipe-overlay.nope { background:rgba(232,124,124,0.15); color:var(--red); }
+        .swipe-buttons { display:flex; gap:24px; margin-top:20px; }
+        .swipe-btn {
+            width:64px; height:64px; border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            font-size:1.6rem; cursor:pointer; border:2px solid;
+            transition:transform 0.2s,box-shadow 0.2s; background:var(--surface);
+        }
+        .swipe-btn:hover { transform:scale(1.15); }
+        .swipe-btn.nope { border-color:var(--red); color:var(--red); }
+        .swipe-btn.nope:hover { box-shadow:0 0 20px rgba(232,124,124,0.3); }
+        .swipe-btn.like { border-color:var(--green); color:var(--green); }
+        .swipe-btn.like:hover { box-shadow:0 0 20px rgba(124,232,168,0.3); }
+        .swipe-counter { font-size:0.8rem; color:var(--text-muted); margin-top:12px; }
+
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+    <div class="nav-brand">Cotidie Arena</div>
+    <div class="nav-tabs" id="navTabs">
+        <button class="nav-tab active" data-page="gallery">Galeri</button>
+        <button class="nav-tab" data-page="swipe">🔥 Swipe</button>
+        <button class="nav-tab" data-page="tournament">Turnuva</button>
+        <button class="nav-tab" data-page="stats">İstatistikler</button>
+        <button class="nav-tab" data-page="leaderboard">🏆 Sıralama</button>
+    </div>
+    <div class="nav-user" id="navUser"></div>
+</nav>
+
+<!-- LOGIN PAGE -->
+<div class="main">
+    <div class="page active" id="loginPage">
+        <div class="login-page">
+            <h1>Cotidie Logo <em>Arena</em></h1>
+            <p>Logoları değerlendirin, turnuvada yarıştırın, favorinizi belirleyin. Başlamak için adınızı girin.</p>
+            <input type="text" class="login-input" id="nameInput" placeholder="Adınızı yazın..." maxlength="20">
+            <br>
+            <button class="login-btn" id="loginBtn">Arena'ya Gir →</button>
+        </div>
+    </div>
+
+    <!-- GALLERY PAGE -->
+    <div class="page" id="galleryPage">
+        <div class="section-title-bar">
+            <h2>Logo <em>Galerisi</em></h2>
+            <div class="filter-pills" id="filterPills"></div>
+        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+
+    <!-- TOURNAMENT PAGE -->
+    <div class="page" id="tournamentPage">
+        <div id="tournamentContent"></div>
+    </div>
+
+    <!-- STATS PAGE -->
+    <div class="page" id="statsPage">
+        <div class="section-title-bar">
+            <h2>İstatistikler & <em>Sıralama</em></h2>
+        </div>
+        <div id="statsContent"></div>
+    </div>
+
+    <!-- SWIPE PAGE -->
+    <div class="page" id="swipePage">
+        <div id="swipeContent"></div>
+    </div>
+
+    <!-- LEADERBOARD PAGE -->
+    <div class="page" id="leaderboardPage">
+        <div class="section-title-bar">
+            <h2>🏆 En <em>Beğenilenler</em></h2>
+        </div>
+        <div id="leaderboardContent"></div>
+    </div>
+</div>
+
+<script>
+// ===================== LOGO DATA =====================
+const LOGOS = [
+    // PRO LOGOS
+    { id: 'pro1', name: '3D Liquid Silk C', category: 'lettermark', source: 'pro', img: 'assets/images/pro_logo_liquid_c_1774098473317.png' },
+    { id: 'pro2', name: 'Living Liquid Quill', category: 'icon', source: 'pro', img: 'assets/images/pro_logo_quill_final_1774098808383.png' },
+    { id: 'pro3', name: 'Journal Rising Drop', category: 'icon', source: 'pro', img: 'assets/images/pro_logo_journal_drop_v2_1774098911810.png' },
+    { id: 'pro4', name: 'Fingerprint C', category: 'lettermark', source: 'pro', img: 'assets/images/pro_logo_fingerprint_c_1774098927200.png' },
+    { id: 'pro5', name: 'Crescent Moon + Quill', category: 'icon', source: 'pro', img: 'assets/images/pro_logo_crescent_pen_1774098940763.png' },
+    { id: 'pro6', name: 'Spiral C', category: 'lettermark', source: 'pro', img: 'assets/images/pro_logo_spiral_c.png' },
+    { id: 'pro7', name: 'Ink Drop Ripple', category: 'abstract', source: 'pro', img: 'assets/images/pro_logo_ink_drop.png' },
+    { id: 'pro8', name: 'Lotus C', category: 'lettermark', source: 'pro', img: 'assets/images/pro_logo_lotus_c.png' },
+    { id: 'pro9', name: 'Wave C', category: 'lettermark', source: 'pro', img: 'assets/images/pro_logo_wave_c.png' },
+    { id: 'pro10', name: 'Phoenix C', category: 'icon', source: 'pro', img: 'assets/images/pro_logo_phoenix_c.png' },
+    { id: 'pro11', name: 'Compass C', category: 'icon', source: 'pro', img: 'assets/images/pro_logo_compass_c.png' },
+    { id: 'pro12', name: 'Hourglass', category: 'abstract', source: 'pro', img: 'assets/images/pro_logo_hourglass.png' },
+    { id: 'pro13', name: 'Butterfly C', category: 'icon', source: 'pro', img: 'assets/images/pro_logo_butterfly_c.png' },
+    // AI ORIGINALS
+    { id: 'ai1', name: 'Terracotta Primary', category: 'abstract', source: 'ai', img: 'assets/images/logo_terracotta_primary_1774096492780.png' },
+    { id: 'ai2', name: 'Living Liquid Gradient', category: 'abstract', source: 'ai', img: 'assets/images/logo_living_liquid_gradient_1774096507180.png' },
+    { id: 'ai3', name: 'App Icon Final', category: 'icon', source: 'ai', img: 'assets/images/logo_app_icon_final_1774096519370.png' },
+    // USER LOGOS
+    { id: 'u1',  name: 'Flowing C + Sparkle', category: 'lettermark', source: 'user', img: 'assets/images/user_logo_1.png' },
+    { id: 'u2',  name: 'Crescent + Feather', category: 'icon', source: 'user', img: 'assets/images/user_logo_2.png' },
+    { id: 'u3',  name: 'Geometric Mandala', category: 'abstract', source: 'user', img: 'assets/images/user_logo_3.png' },
+    { id: 'u4',  name: 'C∞ Infinity Loop', category: 'lettermark', source: 'user', img: 'assets/images/user_logo_4.png' },
+    { id: 'u5',  name: 'Glowing Calligraphy C', category: 'lettermark', source: 'user', img: 'assets/images/user_logo_5.png' },
+    { id: 'u6',  name: 'Golden Feather Ce', category: 'full_logo', source: 'user', img: 'assets/images/user_logo_6.png' },
+    { id: 'u7',  name: 'Brushstroke C Gold', category: 'lettermark', source: 'user', img: 'assets/images/user_logo_7.png' },
+    { id: 'u8',  name: 'Liquid Book', category: 'icon', source: 'user', img: 'assets/images/user_logo_8.png' },
+    { id: 'u9',  name: 'Triple Monogram', category: 'abstract', source: 'user', img: 'assets/images/user_logo_9.png' },
+    { id: 'u10', name: 'Celestial Compass', category: 'full_logo', source: 'user', img: 'assets/images/user_logo_10.png' },
+    { id: 'u11', name: 'Bold C Gold Ring', category: 'lettermark', source: 'user', img: 'assets/images/user_logo_11.png' },
+    { id: 'u12', name: 'Liquid Feather Pen', category: 'icon', source: 'user', img: 'assets/images/user_logo_12.png' },
+    { id: 'u13', name: 'Golden Cd Spiral', category: 'full_logo', source: 'user', img: 'assets/images/user_logo_13.png' },
+    { id: 'u14', name: 'Terracotta Cotidie Full', category: 'full_logo', source: 'user', img: 'assets/images/user_logo_14.png' },
+    { id: 'u15', name: 'Pen C Light', category: 'icon', source: 'user', img: 'assets/images/user_logo_15.png' },
+    { id: 'u16', name: 'Fingerprint Original', category: 'abstract', source: 'user', img: 'assets/images/user_logo_16.png' },
+    { id: 'u17', name: '3D Star Burst', category: 'abstract', source: 'user', img: 'assets/images/user_logo_17.png' },
+    { id: 'u18', name: 'Tree of Life', category: 'icon', source: 'user', img: 'assets/images/user_logo_18.jpg' },
+    { id: 'u19', name: '3D Ribbon C', category: 'lettermark', source: 'user', img: 'assets/images/user_logo_19.png' },
+    { id: 'u20', name: 'Living Liquid Nib', category: 'icon', source: 'user', img: 'assets/images/user_logo_20.png' },
+    { id: 'u21', name: 'Morning Cotidie', category: 'full_logo', source: 'user', img: 'assets/images/user_logo_21.png' },
+    // EXTRA LOGOS
+    { id: 'ex1', name: 'Dark Elegance', category: 'full_logo', source: 'ai', img: 'assets/images/cotidie_logo_dark_1774094717816.png' },
+    { id: 'ex2', name: 'Gold Prestige V2', category: 'full_logo', source: 'ai', img: 'assets/images/cotidie_logo_gold_v2_1774096083271.png' },
+    { id: 'ex3', name: 'Living Liquid V2', category: 'abstract', source: 'ai', img: 'assets/images/cotidie_logo_living_liquid_v2_1774096106901.png' },
+    { id: 'ex4', name: 'Sage Harmony V2', category: 'abstract', source: 'ai', img: 'assets/images/cotidie_logo_sage_v2_1774096093090.png' },
+    { id: 'ex5', name: 'App Icon Classic', category: 'icon', source: 'ai', img: 'assets/images/cotidie_app_icon_1774094732465.png' },
+    { id: 'ex6', name: 'Living Liquid App Icon', category: 'icon', source: 'ai', img: 'assets/images/cotidie_app_icon_living_liquid_v2_retry_1774096233951.png' },
+    { id: 'ex7', name: 'Brand Sheet', category: 'full_logo', source: 'ai', img: 'assets/images/cotidie_brand_sheet_1774094750921.png' },
+];
+
+const CATEGORIES = {
+    all: 'Tümü',
+    lettermark: 'Harf / Lettermark',
+    icon: 'İkon / Sembol',
+    abstract: 'Soyut / Abstract',
+    full_logo: 'Tam Logo'
+};
+
+const SOURCES = { pro: '★ PRO', ai: 'AI', user: 'KULLANICI' };
+
+// ===================== SUPABASE CONFIG =====================
+// >>> BURAYA KENDİ SUPABASE BİLGİLERİNİ GİR <<<
+const SUPABASE_URL = 'https://zawiismyytswlofunzeu.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_Svgz2-tTJsV9Mu4NByTwNg_OkMiIVbn';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ===================== STATE =====================
+let currentUser = '';
+let currentPage = 'login';
+let currentFilter = 'all';
+let tournamentState = null;
+let _cache = { ratings: {}, tournaments: [], matchHistory: [], wins: {}, losses: {}, users: [], swipes: {} };
+
+// ===================== DATA LAYER (Supabase) =====================
+async function loadAllData() {
+    const [ratingsRes, tourRes, matchRes, usersRes, swipesRes] = await Promise.all([
+        sb.from('arena_ratings').select('*'),
+        sb.from('arena_tournaments').select('*').order('created_at', { ascending: false }),
+        sb.from('arena_matches').select('*').order('created_at', { ascending: false }).limit(200),
+        sb.from('arena_users').select('*'),
+        sb.from('arena_swipes').select('*'),
+    ]);
+    const ratings = {};
+    (ratingsRes.data || []).forEach(r => {
+        if (!ratings[r.logo_id]) ratings[r.logo_id] = {};
+        ratings[r.logo_id][r.user_name] = r.rating;
+    });
+    const wins = {}, losses = {};
+    (matchRes.data || []).forEach(m => {
+        wins[m.winner_id] = (wins[m.winner_id] || 0) + 1;
+        losses[m.loser_id] = (losses[m.loser_id] || 0) + 1;
+    });
+    const swipes = {};
+    (swipesRes.data || []).forEach(s => {
+        if (!swipes[s.logo_id]) swipes[s.logo_id] = { right: [], left: [] };
+        swipes[s.logo_id][s.direction].push(s.user_name);
+    });
+    _cache = {
+        ratings,
+        tournaments: (tourRes.data || []).map(t => ({ user: t.user_name, winner: t.winner_id, finalist: t.finalist_id, size: t.size, date: t.created_at })),
+        matchHistory: (matchRes.data || []).map(m => ({ user: m.user_name, winner: m.winner_id, loser: m.loser_id, round: m.round_name, date: m.created_at })),
+        wins, losses, swipes,
+        users: (usersRes.data || []).map(u => u.name),
+    };
+    return _cache;
+}
+
+function getStore() { return _cache; }
+
+async function dbUpsertRating(userName, logoId, rating) {
+    await sb.from('arena_ratings').upsert({ user_name: userName, logo_id: logoId, rating, updated_at: new Date().toISOString() }, { onConflict: 'user_name,logo_id' });
+    if (!_cache.ratings[logoId]) _cache.ratings[logoId] = {};
+    _cache.ratings[logoId][userName] = rating;
+}
+
+async function dbInsertMatch(userName, winnerId, loserId, roundName) {
+    await sb.from('arena_matches').insert({ user_name: userName, winner_id: winnerId, loser_id: loserId, round_name: roundName });
+    _cache.wins[winnerId] = (_cache.wins[winnerId] || 0) + 1;
+    _cache.losses[loserId] = (_cache.losses[loserId] || 0) + 1;
+    _cache.matchHistory.unshift({ user: userName, winner: winnerId, loser: loserId, round: roundName, date: new Date().toISOString() });
+}
+
+async function dbInsertTournament(userName, winnerId, finalistId, size) {
+    await sb.from('arena_tournaments').insert({ user_name: userName, winner_id: winnerId, finalist_id: finalistId, size });
+    _cache.tournaments.unshift({ user: userName, winner: winnerId, finalist: finalistId, size, date: new Date().toISOString() });
+}
+
+async function dbInsertUser(name) {
+    await sb.from('arena_users').upsert({ name }, { onConflict: 'name' });
+    if (!_cache.users.includes(name)) _cache.users.push(name);
+}
+
+async function dbUpsertSwipe(userName, logoId, direction) {
+    await sb.from('arena_swipes').upsert({ user_name: userName, logo_id: logoId, direction }, { onConflict: 'user_name,logo_id' });
+    if (!_cache.swipes[logoId]) _cache.swipes[logoId] = { right: [], left: [] };
+    // Remove old vote if exists
+    _cache.swipes[logoId].right = _cache.swipes[logoId].right.filter(n => n !== userName);
+    _cache.swipes[logoId].left = _cache.swipes[logoId].left.filter(n => n !== userName);
+    _cache.swipes[logoId][direction].push(userName);
+}
+
+// ===================== LOGIN =====================
+document.getElementById('loginBtn').addEventListener('click', doLogin);
+document.getElementById('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+async function doLogin() {
+    const name = document.getElementById('nameInput').value.trim();
+    if (!name) { document.getElementById('nameInput').style.borderColor = 'var(--red)'; return; }
+    document.getElementById('loginBtn').textContent = 'Yükleniyor...';
+    currentUser = name;
+    await dbInsertUser(name);
+    await loadAllData();
+    document.getElementById('navUser').innerHTML = `Hoş geldin, <strong>${name}</strong>`;
+    switchPage('gallery');
+}
+
+// ===================== NAV =====================
+document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => switchPage(tab.dataset.page));
+});
+
+function switchPage(page) {
+    if (!currentUser && page !== 'login') return;
+    currentPage = page;
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    if (page === 'login') {
+        document.getElementById('loginPage').classList.add('active');
+    } else {
+        document.getElementById(page + 'Page').classList.add('active');
+        document.querySelector(`.nav-tab[data-page="${page}"]`)?.classList.add('active');
+    }
+    if (page === 'gallery') renderGallery();
+    if (page === 'swipe') renderSwipe();
+    if (page === 'tournament') renderTournamentMenu();
+    if (page === 'stats') { loadAllData().then(() => renderStats()); }
+    if (page === 'leaderboard') { loadAllData().then(() => renderLeaderboard()); }
+}
+
+// ===================== GALLERY =====================
+function renderGallery() {
+    // Filters
+    const pillsEl = document.getElementById('filterPills');
+    pillsEl.innerHTML = Object.entries(CATEGORIES).map(([k, v]) =>
+        `<button class="filter-pill ${currentFilter === k ? 'active' : ''}" data-cat="${k}">${v}</button>`
+    ).join('');
+    pillsEl.querySelectorAll('.filter-pill').forEach(p => {
+        p.addEventListener('click', () => { currentFilter = p.dataset.cat; renderGallery(); });
+    });
+
+    const filtered = currentFilter === 'all' ? LOGOS : LOGOS.filter(l => l.category === currentFilter);
+    const store = getStore();
+    const grid = document.getElementById('galleryGrid');
+
+    grid.innerHTML = filtered.map(logo => {
+        const userRatings = store.ratings?.[logo.id] || {};
+        const myRating = userRatings[currentUser] || 0;
+        const allRatings = Object.values(userRatings);
+        const avg = allRatings.length ? (allRatings.reduce((a, b) => a + b, 0) / allRatings.length).toFixed(1) : '—';
+        const wins = store.wins?.[logo.id] || 0;
+        const losses = store.losses?.[logo.id] || 0;
+
+        return `
+        <div class="gallery-card" data-id="${logo.id}">
+            ${logo.source === 'pro' ? '<div class="gallery-card-badge">★ PRO</div>' : ''}
+            <img src="${logo.img}" alt="${logo.name}" loading="lazy">
+            <div class="gallery-card-info">
+                <div class="gallery-card-cat">${CATEGORIES[logo.category]} · ${SOURCES[logo.source]}</div>
+                <div class="gallery-card-name">${logo.name}</div>
+                <div class="stars" data-logo="${logo.id}">
+                    ${[1,2,3,4,5].map(s => `<span class="star ${s <= myRating ? 'filled' : ''}" data-star="${s}">★</span>`).join('')}
+                </div>
+                <div class="avg-rating">Ort: <strong>${avg}</strong> (${allRatings.length} oy) · ${wins}G / ${losses}M</div>
+            </div>
+        </div>`;
+    }).join('');
+
+    // Star click handlers
+    grid.querySelectorAll('.stars').forEach(starsEl => {
+        starsEl.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', async () => {
+                const logoId = starsEl.dataset.logo;
+                const rating = parseInt(star.dataset.star);
+                await dbUpsertRating(currentUser, logoId, rating);
+                renderGallery();
+            });
+        });
+    });
+}
+
+// ===================== TOURNAMENT =====================
+function renderTournamentMenu() {
+    const store = getStore();
+    const past = store.tournaments.filter(t => t.user === currentUser);
+    const content = document.getElementById('tournamentContent');
+
+    content.innerHTML = `
+        <div class="tournament-stage">
+            <h2>Logo <em>Turnuvası</em></h2>
+            <p style="color: var(--text-muted); margin-top: 8px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                uwufufu tarzı 1v1 eşleşmelerle tüm logolar arasından favorini belirle!<br>
+                Her turda iki logo karşılaşır — beğendiğini seç, elemeler sonunda şampiyonunu bul.
+            </p>
+            <div class="btn-group">
+                <button class="start-btn" onclick="startTournament(16)">🏆 16'lı Turnuva Başlat</button>
+                <button class="start-btn secondary" onclick="startTournament(8)">⚡ 8'li Hızlı Turnuva</button>
+            </div>
+        </div>
+        ${past.length > 0 ? `
+        <div style="margin-top: 48px;">
+            <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 16px;">Geçmiş Turnuvalar</h3>
+            <table class="history-table">
+                <thead><tr><th>Tarih</th><th>Tür</th><th>Şampiyon</th><th>Finalist</th></tr></thead>
+                <tbody>
+                    ${past.map(t => `<tr>
+                        <td>${new Date(t.date).toLocaleDateString('tr-TR')}</td>
+                        <td>${t.size}'li</td>
+                        <td style="color: var(--gold);">🏆 ${getLogoById(t.winner)?.name || t.winner}</td>
+                        <td>${getLogoById(t.finalist)?.name || t.finalist}</td>
+                    </tr>`).join('')}
+                </tbody>
+            </table>
+        </div>` : ''}
+    `;
+}
+
+function getLogoById(id) { return LOGOS.find(l => l.id === id); }
+
+function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+}
+
+function startTournament(size) {
+    const selected = shuffle(LOGOS).slice(0, size);
+    const rounds = [];
+    let current = selected;
+    let roundNum = 0;
+    while (current.length > 1) {
+        const pairs = [];
+        for (let i = 0; i < current.length; i += 2) {
+            pairs.push({ a: current[i], b: current[i + 1], winner: null });
+        }
+        rounds.push(pairs);
+        current = new Array(pairs.length).fill(null);
+        roundNum++;
+    }
+    tournamentState = { rounds, currentRound: 0, currentMatch: 0, size, selected };
+    renderMatch();
+}
+
+function getRoundName(roundIdx, totalRounds) {
+    const remaining = totalRounds - roundIdx;
+    if (remaining === 1) return 'Final';
+    if (remaining === 2) return 'Yarı Final';
+    if (remaining === 3) return 'Çeyrek Final';
+    return `Tur ${roundIdx + 1}`;
+}
+
+function renderMatch() {
+    const ts = tournamentState;
+    const round = ts.rounds[ts.currentRound];
+    const match = round[ts.currentMatch];
+    const content = document.getElementById('tournamentContent');
+    const totalMatches = ts.rounds.reduce((s, r) => s + r.length, 0);
+    const doneMatches = ts.rounds.slice(0, ts.currentRound).reduce((s, r) => s + r.length, 0) + ts.currentMatch;
+    const roundName = getRoundName(ts.currentRound, ts.rounds.length);
+    const matchNum = ts.currentMatch + 1;
+    const matchTotal = round.length;
+
+    content.innerHTML = `
+        <div class="tournament-stage">
+            <h2>${roundName}</h2>
+            <div class="tournament-info">
+                <div class="tournament-info-item">Maç <strong>${matchNum}/${matchTotal}</strong></div>
+                <div class="tournament-info-item">Kalan <strong>${ts.rounds[ts.currentRound].length * 2 - ts.currentMatch * 2}</strong> logo</div>
+            </div>
+        </div>
+        <div class="tournament-vs">
+            <div class="tournament-card" id="cardA" onclick="pickWinner('a')">
+                <img src="${match.a.img}" alt="${match.a.name}">
+                <div class="tournament-card-info">
+                    <div class="tournament-card-name">${match.a.name}</div>
+                    <div class="tournament-card-cat">${CATEGORIES[match.a.category]}</div>
+                </div>
+            </div>
+            <div class="vs-text">VS</div>
+            <div class="tournament-card" id="cardB" onclick="pickWinner('b')">
+                <img src="${match.b.img}" alt="${match.b.name}">
+                <div class="tournament-card-info">
+                    <div class="tournament-card-name">${match.b.name}</div>
+                    <div class="tournament-card-cat">${CATEGORIES[match.b.category]}</div>
+                </div>
+            </div>
+        </div>
+        <div class="tournament-progress">
+            <div class="progress-text">${Math.round(doneMatches / totalMatches * 100)}% tamamlandı</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:${doneMatches / totalMatches * 100}%"></div></div>
+        </div>
+    `;
+}
+
+function pickWinner(side) {
+    const ts = tournamentState;
+    const round = ts.rounds[ts.currentRound];
+    const match = round[ts.currentMatch];
+    const winner = side === 'a' ? match.a : match.b;
+    const loser = side === 'a' ? match.b : match.a;
+    match.winner = winner;
+
+    // Update stats in Supabase
+    const roundName = getRoundName(ts.currentRound, ts.rounds.length);
+    dbInsertMatch(currentUser, winner.id, loser.id, roundName);
+
+    // Animate
+    const winCard = side === 'a' ? 'cardA' : 'cardB';
+    const loseCard = side === 'a' ? 'cardB' : 'cardA';
+    document.getElementById(winCard).classList.add('winner');
+    document.getElementById(loseCard).classList.add('loser');
+
+    setTimeout(() => {
+        ts.currentMatch++;
+        if (ts.currentMatch >= round.length) {
+            // Fill next round
+            const winners = round.map(m => m.winner);
+            if (ts.currentRound + 1 < ts.rounds.length) {
+                const nextRound = ts.rounds[ts.currentRound + 1];
+                let wi = 0;
+                for (let i = 0; i < nextRound.length; i++) {
+                    nextRound[i].a = winners[wi++];
+                    nextRound[i].b = winners[wi++];
+                }
+                ts.currentRound++;
+                ts.currentMatch = 0;
+                renderMatch();
+            } else {
+                // Tournament Over!
+                finishTournament(winner, loser);
+            }
+        } else {
+            renderMatch();
+        }
+    }, 700);
+}
+
+async function finishTournament(champion, finalist) {
+    await dbInsertTournament(currentUser, champion.id, finalist.id, tournamentState.size);
+
+    const content = document.getElementById('tournamentContent');
+    content.innerHTML = `
+        <div class="winner-reveal">
+            <h1>🏆 Şampiyon!</h1>
+            <img src="${champion.img}" alt="${champion.name}">
+            <h2 style="font-family:'Cormorant Garamond',serif; font-size:2rem; color:var(--text); margin-bottom:8px;">${champion.name}</h2>
+            <p style="color:var(--text-muted); margin-bottom: 8px;">${CATEGORIES[champion.category]} · ${SOURCES[champion.source]}</p>
+            <p style="color:var(--accent); font-size:0.9rem;">Finalist: ${finalist.name}</p>
+            <div class="btn-group">
+                <button class="start-btn" onclick="startTournament(16)">🔄 Yeni 16'lı Turnuva</button>
+                <button class="start-btn secondary" onclick="startTournament(8)">⚡ Yeni 8'li Turnuva</button>
+                <button class="start-btn secondary" onclick="switchPage('stats')">📊 İstatistiklere Git</button>
+            </div>
+        </div>
+    `;
+}
+
+// ===================== STATS =====================
+function renderStats() {
+    const store = getStore();
+    const content = document.getElementById('statsContent');
+
+    // Overall stats
+    const totalRatings = Object.values(store.ratings).reduce((s, r) => s + Object.keys(r).length, 0);
+    const totalTournaments = store.tournaments.length;
+    const totalMatches = store.matchHistory.length;
+    const uniqueUsers = store.users.length;
+
+    // Logo leaderboard (by win rate + avg rating)
+    const leaderboard = LOGOS.map(logo => {
+        const wins = store.wins?.[logo.id] || 0;
+        const losses = store.losses?.[logo.id] || 0;
+        const total = wins + losses;
+        const winRate = total > 0 ? (wins / total * 100) : 0;
+        const ratings = Object.values(store.ratings?.[logo.id] || {});
+        const avgRating = ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 0;
+        const trophies = store.tournaments.filter(t => t.winner === logo.id).length;
+        const score = (winRate * 0.5) + (avgRating * 10) + (trophies * 15);
+        return { ...logo, wins, losses, total, winRate, avgRating, trophies, score, ratingCount: ratings.length };
+    }).sort((a, b) => b.score - a.score);
+
+    // Champion counts
+    const champCounts = {};
+    store.tournaments.forEach(t => { champCounts[t.winner] = (champCounts[t.winner] || 0) + 1; });
+    const topChamp = Object.entries(champCounts).sort((a, b) => b[1] - a[1])[0];
+
+    content.innerHTML = `
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">${totalRatings}</div>
+                <div class="stat-label">Toplam Oy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${totalTournaments}</div>
+                <div class="stat-label">Turnuva</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${totalMatches}</div>
+                <div class="stat-label">Maç</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${uniqueUsers}</div>
+                <div class="stat-label">Kullanıcı</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${topChamp ? getLogoById(topChamp[0])?.name.split(' ').slice(0, 2).join(' ') || '—' : '—'}</div>
+                <div class="stat-label">En Çok Şampiyon</div>
+            </div>
+        </div>
+
+        <h3 style="font-family: 'Cormorant Garamond',serif; font-size: 1.5rem; margin-bottom: 16px;">Genel <em style="color:var(--primary);font-style:normal;">Sıralama</em></h3>
+        <div class="leaderboard">
+            ${leaderboard.map((logo, i) => `
+                <div class="leaderboard-item">
+                    <div class="leaderboard-rank ${i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : ''}">${i + 1}</div>
+                    <img class="leaderboard-img" src="${logo.img}" alt="${logo.name}">
+                    <div class="leaderboard-info">
+                        <div class="leaderboard-name">${logo.name} ${logo.trophies > 0 ? '🏆'.repeat(logo.trophies) : ''}</div>
+                        <div class="leaderboard-stats">
+                            ${logo.total > 0 ? `${logo.wins}G/${logo.losses}M (${logo.winRate.toFixed(0)}%)` : 'Maç yok'} · 
+                            Ort: ${logo.avgRating > 0 ? logo.avgRating.toFixed(1) + '★' : '—'} (${logo.ratingCount} oy) · 
+                            ${SOURCES[logo.source]}
+                        </div>
+                    </div>
+                    <div class="leaderboard-score">${logo.score > 0 ? logo.score.toFixed(0) : '—'}</div>
+                </div>
+            `).join('')}
+        </div>
+
+        <div class="btn-group" style="margin-top:32px;">
+            <button class="start-btn secondary" onclick="if(confirm('Tüm veriler silinecek. Emin misiniz?')){localStorage.removeItem('cotidie_arena');location.reload();}">🗑️ Verileri Sıfırla</button>
+        </div>
+    `;
+}
+
+// ===================== SWIPE (Tinder) =====================
+let swipeDeck = [];
+let swipeIdx = 0;
+
+function renderSwipe() {
+    const store = getStore();
+    // Filter out already-swiped logos for this user
+    swipeDeck = shuffle(LOGOS.filter(l => {
+        const sd = store.swipes?.[l.id];
+        if (!sd) return true;
+        return !sd.right.includes(currentUser) && !sd.left.includes(currentUser);
+    }));
+    swipeIdx = 0;
+    renderSwipeCard();
+}
+
+function renderSwipeCard() {
+    const content = document.getElementById('swipeContent');
+    if (swipeIdx >= swipeDeck.length) {
+        content.innerHTML = `
+            <div class="swipe-container">
+                <h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;">Tüm Logolar <em style="color:var(--primary);font-style:normal;">Değerlendirildi!</em></h2>
+                <p style="color:var(--text-muted);margin-top:8px;">Toplam ${LOGOS.length} logoyu swipe ettiniz.</p>
+                <div class="btn-group">
+                    <button class="start-btn" onclick="resetSwipes()">🔄 Tekrar Başla</button>
+                    <button class="start-btn secondary" onclick="switchPage('leaderboard')">🏆 Sıralamaya Git</button>
+                </div>
+            </div>`;
+        return;
+    }
+    const logo = swipeDeck[swipeIdx];
+    const remaining = swipeDeck.length - swipeIdx;
+    content.innerHTML = `
+        <div class="swipe-container">
+            <div class="swipe-counter">${swipeIdx + 1} / ${swipeDeck.length} · ${remaining} kaldı</div>
+            <div class="swipe-stack" id="swipeStack">
+                <div class="swipe-card" id="swipeCard">
+                    <div class="swipe-overlay like" id="overlayLike">💚</div>
+                    <div class="swipe-overlay nope" id="overlayNope">✕</div>
+                    <img src="${logo.img}" alt="${logo.name}" draggable="false">
+                    <div class="swipe-card-info">
+                        <div class="swipe-card-name">${logo.name}</div>
+                        <div class="swipe-card-cat">${CATEGORIES[logo.category]} · ${SOURCES[logo.source]}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="swipe-buttons">
+                <button class="swipe-btn nope" onclick="doSwipe('left')">✕</button>
+                <button class="swipe-btn like" onclick="doSwipe('right')">♥</button>
+            </div>
+        </div>`;
+    initSwipeDrag();
+}
+
+function initSwipeDrag() {
+    const card = document.getElementById('swipeCard');
+    if (!card) return;
+    let startX = 0, currentX = 0, dragging = false;
+    const onStart = (x) => { startX = x; currentX = x; dragging = true; card.style.transition = 'none'; };
+    const onMove = (x) => {
+        if (!dragging) return;
+        currentX = x;
+        const dx = currentX - startX;
+        const rot = dx * 0.08;
+        card.style.transform = `translateX(${dx}px) rotate(${rot}deg)`;
+        const likeOv = document.getElementById('overlayLike');
+        const nopeOv = document.getElementById('overlayNope');
+        if (dx > 30) { likeOv.style.opacity = Math.min((dx - 30) / 80, 1); nopeOv.style.opacity = 0; }
+        else if (dx < -30) { nopeOv.style.opacity = Math.min((-dx - 30) / 80, 1); likeOv.style.opacity = 0; }
+        else { likeOv.style.opacity = 0; nopeOv.style.opacity = 0; }
+    };
+    const onEnd = () => {
+        if (!dragging) return; dragging = false;
+        const dx = currentX - startX;
+        card.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
+        if (dx > 100) { animateSwipe('right'); }
+        else if (dx < -100) { animateSwipe('left'); }
+        else { card.style.transform = ''; document.getElementById('overlayLike').style.opacity = 0; document.getElementById('overlayNope').style.opacity = 0; }
+    };
+    card.addEventListener('pointerdown', e => onStart(e.clientX));
+    document.addEventListener('pointermove', e => onMove(e.clientX));
+    document.addEventListener('pointerup', () => onEnd());
+}
+
+function animateSwipe(dir) {
+    const card = document.getElementById('swipeCard');
+    card.style.transform = `translateX(${dir === 'right' ? 600 : -600}px) rotate(${dir === 'right' ? 30 : -30}deg)`;
+    card.style.opacity = '0';
+    setTimeout(() => doSwipe(dir, true), 300);
+}
+
+async function doSwipe(dir, fromDrag = false) {
+    if (!fromDrag) {
+        const card = document.getElementById('swipeCard');
+        if (card) {
+            card.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
+            card.style.transform = `translateX(${dir === 'right' ? 600 : -600}px) rotate(${dir === 'right' ? 30 : -30}deg)`;
+            card.style.opacity = '0';
+            await new Promise(r => setTimeout(r, 300));
+        }
+    }
+    const logo = swipeDeck[swipeIdx];
+    await dbUpsertSwipe(currentUser, logo.id, dir);
+    swipeIdx++;
+    renderSwipeCard();
+}
+
+function resetSwipes() {
+    swipeIdx = 0;
+    // Re-shuffle all logos
+    swipeDeck = shuffle([...LOGOS]);
+    renderSwipeCard();
+}
+
+// ===================== LEADERBOARD (Public) =====================
+function renderLeaderboard() {
+    const store = getStore();
+    const content = document.getElementById('leaderboardContent');
+
+    const ranked = LOGOS.map(logo => {
+        const sd = store.swipes?.[logo.id] || { right: [], left: [] };
+        const likes = sd.right.length;
+        const dislikes = sd.left.length;
+        const totalSwipes = likes + dislikes;
+        const likeRate = totalSwipes > 0 ? (likes / totalSwipes * 100) : 0;
+        const ratings = Object.values(store.ratings?.[logo.id] || {});
+        const avgRating = ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 0;
+        const trophies = store.tournaments.filter(t => t.winner === logo.id).length;
+        const wins = store.wins?.[logo.id] || 0;
+        const losses = store.losses?.[logo.id] || 0;
+        const score = (likeRate * 0.6) + (avgRating * 10) + (trophies * 15) + (likes * 2);
+        return { ...logo, likes, dislikes, totalSwipes, likeRate, avgRating, trophies, wins, losses, score, ratingCount: ratings.length };
+    }).sort((a, b) => b.score - a.score);
+
+    const totalVotes = ranked.reduce((s, r) => s + r.totalSwipes, 0);
+    const totalRatings = ranked.reduce((s, r) => s + r.ratingCount, 0);
+
+    content.innerHTML = `
+        <div class="stats-grid" style="margin-bottom:32px;">
+            <div class="stat-card"><div class="stat-value">${totalVotes}</div><div class="stat-label">Toplam Swipe</div></div>
+            <div class="stat-card"><div class="stat-value">${totalRatings}</div><div class="stat-label">Toplam Puan</div></div>
+            <div class="stat-card"><div class="stat-value">${store.tournaments.length}</div><div class="stat-label">Turnuva</div></div>
+            <div class="stat-card"><div class="stat-value">${store.users.length}</div><div class="stat-label">Kullanıcı</div></div>
+        </div>
+        <div class="leaderboard">
+            ${ranked.map((logo, i) => {
+                const barW = logo.totalSwipes > 0 ? logo.likeRate : 0;
+                return `
+                <div class="leaderboard-item">
+                    <div class="leaderboard-rank ${i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : ''}">${i + 1}</div>
+                    <img class="leaderboard-img" src="${logo.img}" alt="${logo.name}">
+                    <div class="leaderboard-info">
+                        <div class="leaderboard-name">${logo.name} ${logo.trophies > 0 ? '🏆'.repeat(logo.trophies) : ''}</div>
+                        <div class="leaderboard-stats">
+                            💚 ${logo.likes} · ✕ ${logo.dislikes} · 
+                            ${logo.totalSwipes > 0 ? `%${logo.likeRate.toFixed(0)} beğeni` : 'Swipe yok'} · 
+                            ★ ${logo.avgRating > 0 ? logo.avgRating.toFixed(1) : '—'} (${logo.ratingCount}) · 
+                            ${SOURCES[logo.source]}
+                        </div>
+                        <div style="margin-top:4px;height:4px;width:100%;max-width:200px;background:var(--surface2);border-radius:100px;overflow:hidden;">
+                            <div style="height:100%;width:${barW}%;background:linear-gradient(90deg,var(--green),var(--primary));border-radius:100px;"></div>
+                        </div>
+                    </div>
+                    <div class="leaderboard-score">${logo.score > 0 ? logo.score.toFixed(0) : '—'}</div>
+                </div>`;
+            }).join('')}
+        </div>
+    `;
+}
+</script>
+</body>
+</html>
