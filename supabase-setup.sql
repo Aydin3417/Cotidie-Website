@@ -74,3 +74,16 @@ ALTER TABLE arena_swipes ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Public read arena_swipes" ON arena_swipes FOR SELECT USING (true);
 CREATE POLICY "Public insert arena_swipes" ON arena_swipes FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public update arena_swipes" ON arena_swipes FOR UPDATE USING (true);
+
+-- 6) COMMENTS tablosu
+CREATE TABLE IF NOT EXISTS arena_comments (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_name TEXT NOT NULL,
+    logo_id TEXT NOT NULL,
+    comment_text TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE arena_comments ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public read arena_comments" ON arena_comments FOR SELECT USING (true);
+CREATE POLICY "Public insert arena_comments" ON arena_comments FOR INSERT WITH CHECK (true);

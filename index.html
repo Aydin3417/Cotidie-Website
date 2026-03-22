@@ -463,7 +463,51 @@
         .swipe-btn.like:hover { box-shadow:0 0 20px rgba(124,232,168,0.3); }
         .swipe-counter { font-size:0.8rem; color:var(--text-muted); margin-top:12px; }
 
+        /* MODAL */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 10, 10, 0.85); z-index: 1000; align-items: center; justify-content: center;
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: var(--surface); width: 90%; max-width: 500px; max-height: 90vh;
+            border-radius: 20px; border: 1px solid var(--border); overflow: hidden;
+            display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .modal-header {
+            padding: 16px 20px; border-bottom: 1px solid var(--border2);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--gold); }
+        .modal-close { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; }
+        .modal-body { padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+        .comment-list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+        .comment-item {
+            background: var(--surface2); padding: 12px; border-radius: 12px;
+            font-size: 0.9rem; line-height: 1.4; border: 1px solid var(--border2);
+        }
+        .comment-user { font-weight: 600; color: var(--primary); font-size: 0.8rem; margin-bottom: 4px; display: flex; justify-content: space-between; }
+        .comment-date { font-weight: 400; color: var(--text-muted); font-size: 0.7rem; }
+        .comment-input-area {
+            display: flex; gap: 8px; margin-top: 10px; flex-direction: column;
+        }
+        .comment-textarea {
+            width: 100%; background: var(--surface2); border: 1px solid var(--border);
+            color: var(--text); padding: 12px; border-radius: 12px; resize: none;
+            font-family: inherit; font-size: 0.95rem; height: 80px;
+        }
+        .comment-textarea:focus { outline: none; border-color: var(--primary); }
+        .btn-comment {
+            background: var(--primary); color: #fff; border: none; padding: 10px;
+            border-radius: 100px; font-weight: 600; cursor: pointer; align-self: flex-end;
+            padding: 8px 20px; transition: opacity 0.2s;
+        }
+        .btn-comment:hover { opacity: 0.9; }
+
     </style>
+    <!-- CANVAS CONFETTI -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
@@ -525,6 +569,35 @@
             <h2>🏆 En <em>Beğenilenler</em></h2>
         </div>
         <div id="leaderboardContent"></div>
+    </div>
+</div>
+
+<!-- COMMENT MODAL -->
+<div id="commentModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title" id="modalLogoName">Logo Name</div>
+            <button class="modal-close" onclick="closeCommentModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <img id="modalLogoImg" src="" style="width: 100%; height: 200px; object-fit: contain; background: var(--surface2); border-radius: 12px; margin-bottom: 10px;">
+            
+            <!-- Stars inside modal -->
+            <div style="text-align:center; margin-bottom: 10px;">
+                <div class="stars" id="modalStars" style="justify-content:center; gap:8px;"></div>
+                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;" id="modalStatsText">Yükleniyor...</div>
+            </div>
+
+            <h3 style="font-size: 1.1rem; font-family:'Cormorant Garamond',serif; border-bottom:1px solid var(--border2); padding-bottom:8px;">Yorumlar</h3>
+            <div class="comment-list" id="modalCommentList">
+                <!-- Comments go here -->
+            </div>
+            
+            <div class="comment-input-area">
+                <textarea class="comment-textarea" id="commentInput" placeholder="Bu logo hakkında ne düşünüyorsun?"></textarea>
+                <button class="btn-comment" onclick="submitComment()">Yorum Yap</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -607,16 +680,18 @@ let currentUser = '';
 let currentPage = 'login';
 let currentFilter = 'all';
 let tournamentState = null;
-let _cache = { ratings: {}, tournaments: [], matchHistory: [], wins: {}, losses: {}, users: [], swipes: {} };
+let currentModalLogoId = null;
+let _cache = { ratings: {}, tournaments: [], matchHistory: [], wins: {}, losses: {}, users: [], swipes: {}, comments: {} };
 
 // ===================== DATA LAYER (Supabase) =====================
 async function loadAllData() {
-    const [ratingsRes, tourRes, matchRes, usersRes, swipesRes] = await Promise.all([
+    const [ratingsRes, tourRes, matchRes, usersRes, swipesRes, commentsRes] = await Promise.all([
         sb.from('arena_ratings').select('*'),
         sb.from('arena_tournaments').select('*').order('created_at', { ascending: false }),
         sb.from('arena_matches').select('*').order('created_at', { ascending: false }).limit(200),
         sb.from('arena_users').select('*'),
         sb.from('arena_swipes').select('*'),
+        sb.from('arena_comments').select('*').order('created_at', { ascending: true })
     ]);
     const ratings = {};
     (ratingsRes.data || []).forEach(r => {
@@ -633,11 +708,16 @@ async function loadAllData() {
         if (!swipes[s.logo_id]) swipes[s.logo_id] = { right: [], left: [] };
         swipes[s.logo_id][s.direction].push(s.user_name);
     });
+    const comments = {};
+    (commentsRes.data || []).forEach(c => {
+        if (!comments[c.logo_id]) comments[c.logo_id] = [];
+        comments[c.logo_id].push({ user: c.user_name, text: c.comment_text, date: c.created_at });
+    });
     _cache = {
         ratings,
         tournaments: (tourRes.data || []).map(t => ({ user: t.user_name, winner: t.winner_id, finalist: t.finalist_id, size: t.size, date: t.created_at })),
         matchHistory: (matchRes.data || []).map(m => ({ user: m.user_name, winner: m.winner_id, loser: m.loser_id, round: m.round_name, date: m.created_at })),
-        wins, losses, swipes,
+        wins, losses, swipes, comments,
         users: (usersRes.data || []).map(u => u.name),
     };
     return _cache;
@@ -741,14 +821,15 @@ function renderGallery() {
         return `
         <div class="gallery-card" data-id="${logo.id}">
             ${logo.source === 'pro' ? '<div class="gallery-card-badge">★ PRO</div>' : ''}
-            <img src="${logo.img}" alt="${logo.name}" loading="lazy">
+            <img src="${logo.img}" alt="${logo.name}" loading="lazy" onclick="openCommentModal('${logo.id}')" style="cursor:pointer;">
             <div class="gallery-card-info">
                 <div class="gallery-card-cat">${CATEGORIES[logo.category]} · ${SOURCES[logo.source]}</div>
-                <div class="gallery-card-name">${logo.name}</div>
+                <div class="gallery-card-name" onclick="openCommentModal('${logo.id}')" style="cursor:pointer;">${logo.name}</div>
                 <div class="stars" data-logo="${logo.id}">
                     ${[1,2,3,4,5].map(s => `<span class="star ${s <= myRating ? 'filled' : ''}" data-star="${s}">★</span>`).join('')}
                 </div>
                 <div class="avg-rating">Ort: <strong>${avg}</strong> (${allRatings.length} oy) · ${wins}G / ${losses}M</div>
+                <button class="nav-tab" style="padding: 4px 12px; font-size:0.75rem; margin-top:8px; width:100%; border-radius:8px;" onclick="openCommentModal('${logo.id}')">💬 Yorumlar</button>
             </div>
         </div>`;
     }).join('');
@@ -756,7 +837,8 @@ function renderGallery() {
     // Star click handlers
     grid.querySelectorAll('.stars').forEach(starsEl => {
         starsEl.querySelectorAll('.star').forEach(star => {
-            star.addEventListener('click', async () => {
+            star.addEventListener('click', async (e) => {
+                e.stopPropagation();
                 const logoId = starsEl.dataset.logo;
                 const rating = parseInt(star.dataset.star);
                 await dbUpsertRating(currentUser, logoId, rating);
@@ -764,6 +846,104 @@ function renderGallery() {
             });
         });
     });
+}
+
+// ===================== COMMENTS =====================
+async function dbInsertComment(userName, logoId, text) {
+    if (!text.trim()) return;
+    const { data } = await sb.from('arena_comments').insert({ user_name: userName, logo_id: logoId, comment_text: text }).select();
+    if (data && data.length > 0) {
+        if (!_cache.comments[logoId]) _cache.comments[logoId] = [];
+        _cache.comments[logoId].push({ user: userName, text: text, date: data[0].created_at });
+    }
+}
+
+function openCommentModal(logoId) {
+    currentModalLogoId = logoId;
+    const logo = getLogoById(logoId);
+    
+    document.getElementById('modalLogoName').textContent = logo.name;
+    document.getElementById('modalLogoImg').src = logo.img;
+    
+    renderModalContent();
+    document.getElementById('commentModal').classList.add('active');
+}
+
+function closeCommentModal() {
+    currentModalLogoId = null;
+    document.getElementById('commentModal').classList.remove('active');
+}
+
+function renderModalContent() {
+    if (!currentModalLogoId) return;
+    const store = getStore();
+    const logoId = currentModalLogoId;
+    const logo = getLogoById(logoId);
+    
+    // Ratings & Stars
+    const userRatings = store.ratings?.[logoId] || {};
+    const myRating = userRatings[currentUser] || 0;
+    const allRatings = Object.values(userRatings);
+    const avg = allRatings.length ? (allRatings.reduce((a, b) => a + b, 0) / allRatings.length).toFixed(1) : '—';
+    const wins = store.wins?.[logoId] || 0;
+    const losses = store.losses?.[logoId] || 0;
+    
+    document.getElementById('modalStars').innerHTML = [1,2,3,4,5].map(s => 
+        `<span class="star ${s <= myRating ? 'filled' : ''}" style="cursor:pointer; font-size:1.5rem;" onclick="rateInModal('${logoId}', ${s})">★</span>`
+    ).join('');
+    
+    document.getElementById('modalStatsText').innerHTML = `Ortalama: <strong>${avg}</strong> (${allRatings.length} oy) · Toplam Turnuva Bilanço: ${wins}G / ${losses}M`;
+    
+    // Comments
+    const comments = store.comments?.[logoId] || [];
+    const commentListInfo = document.getElementById('modalCommentList');
+    
+    if (comments.length === 0) {
+        commentListInfo.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding: 20px 0; font-size:0.9rem;">İlk yorumu sen yaz! ✍️</div>`;
+    } else {
+        commentListInfo.innerHTML = comments.map(c => `
+            <div class="comment-item">
+                <div class="comment-user">
+                    <span>${c.user}</span>
+                    <span class="comment-date">${new Date(c.date).toLocaleDateString('tr-TR')} ${new Date(c.date).getHours()}:${new Date(c.date).getMinutes().toString().padStart(2,'0')}</span>
+                </div>
+                <div style="white-space: pre-wrap;">${c.text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>
+            </div>
+        `).join('');
+    }
+}
+
+async function submitComment() {
+    const input = document.getElementById('commentInput');
+    const text = input.value;
+    if (!text.trim() || !currentModalLogoId) return;
+    
+    const btn = document.querySelector('.btn-comment');
+    btn.textContent = 'Gönderiliyor...';
+    btn.disabled = true;
+    
+    await dbInsertComment(currentUser, currentModalLogoId, text);
+    
+    btn.textContent = 'Yorum Yap';
+    btn.disabled = false;
+    input.value = '';
+    
+    renderModalContent();
+}
+
+async function rateInModal(logoId, rating) {
+    await dbUpsertRating(currentUser, logoId, rating);
+    renderModalContent();
+    // Also re-render gallery in background to keep stats synced
+    if (currentPage === 'gallery') renderGallery();
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('commentModal');
+    if (event.target == modal) {
+        closeCommentModal();
+    }
 }
 
 // ===================== TOURNAMENT =====================
@@ -924,6 +1104,28 @@ function pickWinner(side) {
 
 async function finishTournament(champion, finalist) {
     await dbInsertTournament(currentUser, champion.id, finalist.id, tournamentState.size);
+
+    // Fire Confetti! 🎉
+    if (typeof confetti === 'function') {
+        const duration = 3000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+        function randomInRange(min, max) {
+          return Math.random() * (max - min) + min;
+        }
+
+        const interval = setInterval(function() {
+          const timeLeft = animationEnd - Date.now();
+          if (timeLeft <= 0) return clearInterval(interval);
+          const particleCount = 50 * (timeLeft / duration);
+          confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+          confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+        }, 250);
+        
+        // Initial big blast
+        confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 }, zIndex: 9999 });
+    }
 
     const content = document.getElementById('tournamentContent');
     content.innerHTML = `
