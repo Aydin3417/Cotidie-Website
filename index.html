@@ -418,14 +418,92 @@
             font-size: 0.72rem; font-weight: 700; color: var(--gold);
         }
 
+        /* =========== MOBILE RESPONSIVE =========== */
         @media (max-width: 768px) {
-            .nav { padding: 10px 16px; flex-wrap: wrap; }
-            .nav-tabs { order: 3; width: 100%; justify-content: center; }
-            .main { padding: 120px 16px 40px; }
-            .tournament-vs { gap: 16px; }
-            .tournament-card { width: 280px; }
-            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .nav { padding: 10px 12px; flex-wrap: wrap; gap: 8px; }
+            .nav-brand { font-size: 1.15rem; }
+            .nav-tabs {
+                order: 3; width: 100%;
+                overflow-x: auto; -webkit-overflow-scrolling: touch;
+                gap: 4px; padding-bottom: 4px;
+                scrollbar-width: none;
+            }
+            .nav-tabs::-webkit-scrollbar { display: none; }
+            .nav-tab { padding: 6px 12px; font-size: 0.7rem; white-space: nowrap; flex-shrink: 0; }
+            .nav-user { font-size: 0.7rem; }
+            .main { padding: 110px 12px 32px; }
+            .login-page h1 { font-size: 2rem; }
+            .login-page p { font-size: 0.85rem; padding: 0 12px; }
+            .login-input { width: 100%; max-width: 300px; padding: 14px 18px; font-size: 0.9rem; }
+            .login-btn { padding: 12px 36px; font-size: 0.85rem; }
+            .section-title-bar { margin-bottom: 20px; }
+            .section-title-bar h2 { font-size: 1.5rem; }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+            .gallery-card-info { padding: 10px; }
+            .gallery-card-name { font-size: 0.95rem; }
+            .gallery-card-cat { font-size: 0.58rem; }
+            .stars { gap: 2px; }
+            .star { width: 24px; height: 24px; font-size: 1rem; line-height: 24px; }
+            .avg-rating { font-size: 0.65rem; }
+            .tournament-stage h2 { font-size: 1.6rem; }
+            .tournament-vs { gap: 12px; margin-top: 20px; }
+            .tournament-card { width: 100%; max-width: 280px; }
+            .tournament-card-info { padding: 12px; }
+            .tournament-card-name { font-size: 1.1rem; }
+            .vs-text { font-size: 2rem; }
+            .winner-reveal { padding: 30px 0; }
+            .winner-reveal h1 { font-size: 2rem; }
+            .winner-reveal img { width: 200px; height: 200px; border-radius: 20px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .stat-card { padding: 16px; border-radius: 14px; }
+            .stat-value { font-size: 1.8rem; }
+            .stat-label { font-size: 0.6rem; }
+            .leaderboard-item { padding: 10px 12px; gap: 10px; }
+            .leaderboard-rank { width: 28px; height: 28px; font-size: 0.9rem; }
+            .leaderboard-img { width: 36px; height: 36px; border-radius: 10px; }
+            .leaderboard-name { font-size: 0.9rem; }
+            .leaderboard-stats { font-size: 0.62rem; line-height: 1.4; }
+            .leaderboard-score { font-size: 1.1rem; }
+            .swipe-stack { width: 300px; height: 400px; }
+            .swipe-card img { height: 280px; }
+            .swipe-card-name { font-size: 1.1rem; }
+            .swipe-btn { width: 56px; height: 56px; font-size: 1.3rem; }
+            .swipe-buttons { gap: 16px; }
+            .start-btn { padding: 12px 24px; font-size: 0.8rem; }
+            .btn-group { gap: 8px; flex-direction: column; align-items: center; }
+            .btn-group .start-btn { width: 100%; max-width: 280px; justify-content: center; }
+            .history-table { font-size: 0.75rem; display: block; overflow-x: auto; white-space: nowrap; }
+            .history-table th, .history-table td { padding: 8px 10px; font-size: 0.72rem; }
+            .admin-logo-detail { flex-direction: column; gap: 12px; }
+            .admin-logo-detail img { width: 60px; height: 60px; }
+            .admin-section-title { font-size: 1.2rem; margin: 24px 0 12px; }
+            .modal-content { width: 95%; max-height: 85vh; border-radius: 16px; }
+            .modal-header { padding: 12px 16px; }
+            .modal-title { font-size: 1.2rem; }
+            .modal-body { padding: 14px; }
+            .device-frame { width: 270px; height: 580px; }
+            .app-grid { gap: 16px 0; padding: 48px 10px 90px; }
+            .app-ico { width: 48px; height: 48px; border-radius: 11px; }
+            .app-lbl { font-size: 8.5px; max-width: 52px; }
+            .dock-bar .app-ico { width: 44px; height: 44px; }
+            .dock-bar { padding: 10px 4px; border-radius: 22px; }
+            .dynamic-island { width: 100px; height: 28px; top: 8px; }
+            .device-toggle-btn { padding: 6px 14px; font-size: 0.7rem; }
+            .mockup-logo-label { font-size: 1rem; }
+        }
+        @media (max-width: 380px) {
+            .main { padding: 105px 8px 24px; }
+            .gallery-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .gallery-card-name { font-size: 0.85rem; }
+            .swipe-stack { width: 260px; height: 360px; }
+            .swipe-card img { height: 240px; }
+            .tournament-card { max-width: 240px; }
+            .device-frame { width: 240px; height: 520px; }
+            .app-ico { width: 42px; height: 42px; }
+            .app-lbl { font-size: 7.5px; max-width: 46px; }
+            .app-grid { gap: 14px 0; padding: 42px 8px 80px; }
+            .dock-bar .app-ico { width: 38px; height: 38px; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
 
         /* SWIPE */
