@@ -707,7 +707,7 @@
 
 <!-- NAV -->
 <nav class="nav" id="nav">
-    <div class="nav-brand">Cotidie Arena</div>
+    <div class="nav-brand" onclick="if(currentUser) switchPage('gallery')" style="cursor:pointer;">Cotidie Arena</div>
     <div class="nav-tabs" id="navTabs">
         <button class="nav-tab active" data-page="gallery">Galeri</button>
         <button class="nav-tab" data-page="swipe">🔥 Swipe</button>
@@ -715,6 +715,7 @@
         <button class="nav-tab" data-page="tournament">Turnuva</button>
         <button class="nav-tab" data-page="stats">İstatistikler</button>
         <button class="nav-tab" data-page="leaderboard">🏆 Sıralama</button>
+        <button class="nav-tab" id="logoutBtn" style="margin-left:auto; color:var(--text-muted); font-size:0.75rem; border-color:rgba(255,255,255,0.1);" onclick="doLogout()">🚪 Çıkış</button>
     </div>
     <div class="nav-user" id="navUser"></div>
 </nav>
@@ -976,6 +977,8 @@ async function doLogin() {
     await dbInsertUser(name);
     await loadAllData();
     document.getElementById('navUser').innerHTML = `Hoş geldin, <strong>${name}</strong>`;
+    document.getElementById('nav').style.display = 'flex';
+    currentPage = '';
     switchPage('gallery');
 }
 
@@ -986,7 +989,9 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
 
 function switchPage(page) {
     if (!currentUser && page !== 'login') return;
-    if (currentPage === page && page !== 'login') return;
+    // Allow re-entering data pages to refresh, block only interactive pages
+    const noRefreshPages = ['tournament', 'swipe'];
+    if (currentPage === page && noRefreshPages.includes(page)) return;
     
     // Quick switch if starting up
     if (!currentPage) {
@@ -1021,12 +1026,22 @@ function executeSwitch(page) {
         document.getElementById(page + 'Page').classList.add('active');
         document.querySelector(`.nav-tab[data-page="${page}"]`)?.classList.add('active');
     }
-    if (page === 'gallery') renderGallery();
-    if (page === 'swipe') renderSwipe();
+    if (page === 'gallery') { loadAllData().then(() => renderGallery()); }
+    if (page === 'swipe') { loadAllData().then(() => renderSwipe()); }
     if (page === 'swipeStats') { loadAllData().then(() => renderSwipeStats()); }
     if (page === 'tournament') renderTournamentMenu();
     if (page === 'stats') { loadAllData().then(() => renderStats()); }
     if (page === 'leaderboard') { loadAllData().then(() => renderLeaderboard()); }
+}
+
+function doLogout() {
+    localStorage.removeItem('cotidie_arena_username');
+    currentUser = '';
+    currentPage = 'login';
+    document.getElementById('nav').style.display = 'none';
+    document.getElementById('nameInput').value = '';
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('loginPage').classList.add('active');
 }
 
 // ===================== GALLERY =====================
@@ -1296,7 +1311,7 @@ function renderMatch() {
     `;
 }
 
-function pickWinner(side) {
+async function pickWinner(side) {
     const ts = tournamentState;
     const round = ts.rounds[ts.currentRound];
     const match = round[ts.currentMatch];
@@ -1306,7 +1321,7 @@ function pickWinner(side) {
 
     // Update stats in Supabase
     const roundName = getRoundName(ts.currentRound, ts.rounds.length);
-    dbInsertMatch(currentUser, winner.id, loser.id, roundName);
+    await dbInsertMatch(currentUser, winner.id, loser.id, roundName);
 
     // Animate
     const winCard = side === 'a' ? 'cardA' : 'cardB';
@@ -1454,7 +1469,7 @@ function renderStats() {
         </div>
 
         <div class="btn-group" style="margin-top:32px;">
-            <button class="start-btn secondary" onclick="if(confirm('Tüm veriler silinecek. Emin misiniz?')){localStorage.removeItem('cotidie_arena');location.reload();}">🗑️ Verileri Sıfırla</button>
+            <button class="start-btn secondary" onclick="if(confirm('Yerel oturum bilgilerin silinecek ve çıkış yapılacak. Supabase veritabanı etkilenmez. Devam?')){localStorage.removeItem('cotidie_arena_username'); location.reload();}">🚪 Oturumu Kapat & Sıfırla</button>
         </div>
     `;
 }
