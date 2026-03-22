@@ -1502,7 +1502,7 @@ function openMockupModal(logoId) {
     const logo = getLogoById(logoId);
     if (!logo) return;
     
-    let mockHTML = \`
+    let mockHTML = `
     <div class="mockup-modal active" id="mockupModal" onclick="if(event.target===this) closeMockupModal()">
         <div class="iphone-wrapper">
             <button class="mockup-close" onclick="closeMockupModal()">✕</button>
@@ -1528,7 +1528,7 @@ function openMockupModal(logoId) {
                     
                     <!-- COTIDIE HIGHLIGHT -->
                     <div class="app-icon-wrapper" style="animation: highlight-pulse-c 2.5s infinite; border-radius: 14px; position:relative; z-index:5;">
-                        <img src="\${logo.img}" class="app-icon" style="background: var(--surface2);">
+                        <img src="${logo.img}" class="app-icon" style="background: var(--surface2);">
                         <div class="app-name" style="color:var(--gold); font-weight:700;">Cotidie</div>
                     </div>
 
@@ -1546,7 +1546,7 @@ function openMockupModal(logoId) {
             </div>
         </div>
     </div>
-    \`;
+    `;
     
     closeMockupModal();
     document.body.insertAdjacentHTML('beforeend', mockHTML);
