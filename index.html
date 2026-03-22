@@ -1615,47 +1615,54 @@ function renderLeaderboard() {
 // ===================== DEVICE MOCKUP PREVIEW =====================
 let mockupDevice = 'iphone';
 
+// App data with SimpleIcons slugs and exact brand colors/gradients
 const REAL_APPS = [
-    { name: 'Instagram', domain: 'instagram.com', color: '#E1306C' },
-    { name: 'WhatsApp', domain: 'whatsapp.com', color: '#25D366' },
-    { name: 'Spotify', domain: 'spotify.com', color: '#1DB954' },
-    { name: 'YouTube', domain: 'youtube.com', color: '#FF0000' },
-    { name: 'Netflix', domain: 'netflix.com', color: '#E50914' },
-    { name: 'X', domain: 'x.com', color: '#000' },
-    { name: 'TikTok', domain: 'tiktok.com', color: '#010101' },
-    { name: 'Telegram', domain: 'telegram.org', color: '#0088cc' },
-    { name: 'Notion', domain: 'notion.so', color: '#000' },
-    { name: 'Gmail', domain: 'gmail.com', color: '#EA4335' },
-    { name: 'Discord', domain: 'discord.com', color: '#5865F2' },
+    { name: 'Instagram', slug: 'instagram', bg: 'linear-gradient(135deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888)' },
+    { name: 'WhatsApp', slug: 'whatsapp', bg: '#25D366' },
+    { name: 'Spotify', slug: 'spotify', bg: '#1DB954' },
+    { name: 'YouTube', slug: 'youtube', bg: '#FF0000' },
+    { name: 'Netflix', slug: 'netflix', bg: '#E50914' },
+    { name: 'X', slug: 'x', bg: '#000' },
+    { name: 'TikTok', slug: 'tiktok', bg: '#010101' },
+    { name: 'Telegram', slug: 'telegram', bg: 'linear-gradient(180deg, #2AABEE, #229ED9)' },
+    { name: 'Notion', slug: 'notion', bg: '#fff', iconColor: '000000' },
+    { name: 'Gmail', slug: 'gmail', bg: '#fff', iconColor: 'EA4335' },
+    { name: 'Discord', slug: 'discord', bg: '#5865F2' },
 ];
 
 const DOCK_APPS_IPHONE = [
-    { name: 'Phone', emoji: '📞', color: '#34C759' },
-    { name: 'Safari', emoji: '🧭', color: '#006CFF' },
-    { name: 'Messages', emoji: '💬', color: '#34C759' },
-    { name: 'Music', emoji: '🎵', color: '#FC3C44' },
+    { name: 'Phone', slug: 'phone', bg: '#34C759', svgPath: '<svg viewBox="0 0 24 24" fill="#fff" width="55%" height="55%"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>' },
+    { name: 'Safari', slug: 'safari', bg: 'linear-gradient(180deg, #00BFFF, #006CFF)' },
+    { name: 'Messages', slug: 'imessage', bg: '#34C759' },
+    { name: 'Music', slug: 'applemusic', bg: 'linear-gradient(135deg, #FC3C44, #FC3C80)' },
 ];
 
 const DOCK_APPS_SAMSUNG = [
-    { name: 'Phone', emoji: '📞', color: '#4CAF50' },
-    { name: 'Messages', emoji: '💬', color: '#2196F3' },
-    { name: 'Chrome', domain: 'google.com', color: '#4285F4' },
-    { name: 'Camera', emoji: '📷', color: '#607D8B' },
+    { name: 'Phone', slug: 'phone', bg: '#4CAF50', svgPath: '<svg viewBox="0 0 24 24" fill="#fff" width="55%" height="55%"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>' },
+    { name: 'Messages', slug: 'googlemessages', bg: 'linear-gradient(135deg, #1A73E8, #4285F4)' },
+    { name: 'Chrome', slug: 'googlechrome', bg: '#fff', iconColor: '4285F4' },
+    { name: 'Camera', slug: 'camera', bg: '#222', svgPath: '<svg viewBox="0 0 24 24" fill="#fff" width="55%" height="55%"><path d="M12 15.2A3.2 3.2 0 108.8 12 3.2 3.2 0 0012 15.2zM9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>' },
 ];
 
 function appIcon(app, isSamsung) {
-    const br = isSamsung ? 'border-radius:16px;' : 'border-radius:13px;';
-    if (app.domain) {
-        return `<img src="https://www.google.com/s2/favicons?domain=${app.domain}&sz=128" class="app-ico" style="${br} background:${app.color};" onerror="this.style.fontSize='28px';this.style.lineHeight='56px';this.style.textAlign='center';this.src='';this.alt='${app.name[0]}';">`;
+    const br = isSamsung ? '16px' : '13px';
+    const iconColor = app.iconColor || 'ffffff';
+    const bgStyle = app.bg.includes('gradient') ? `background:${app.bg};` : `background:${app.bg};`;
+
+    if (app.svgPath) {
+        return `<div class="app-ico" style="border-radius:${br}; ${bgStyle} display:flex; align-items:center; justify-content:center;">${app.svgPath}</div>`;
     }
-    return `<div class="app-ico" style="${br} background:${app.color}; display:flex; align-items:center; justify-content:center; font-size:28px;">${app.emoji}</div>`;
+
+    return `<div class="app-ico" style="border-radius:${br}; ${bgStyle} display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative;">
+        <img src="https://cdn.simpleicons.org/${app.slug}/${iconColor}" style="width:58%; height:58%; object-fit:contain;" onerror="this.parentElement.innerHTML='<span style=color:#fff;font-size:22px;font-weight:700>${app.name[0]}</span>'">
+    </div>`;
 }
 
 function buildStatusBar(type) {
     const time = type === 'iphone' ? '9:41' : '12:30';
-    const signalSVG = `<svg width="16" height="12" viewBox="0 0 16 12"><rect x="0" y="8" width="3" height="4" rx="0.8" fill="#fff"/><rect x="4.5" y="5" width="3" height="7" rx="0.8" fill="#fff"/><rect x="9" y="2" width="3" height="10" rx="0.8" fill="#fff"/><rect x="13.5" y="0" width="2.5" height="12" rx="0.8" fill="rgba(255,255,255,0.3)"/></svg>`;
-    const wifiSVG = `<svg width="14" height="12" viewBox="0 0 14 12"><path d="M7 10.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" fill="#fff"/><path d="M3.5 8.5C4.5 7.2 5.7 6.5 7 6.5s2.5.7 3.5 2" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M1 5.5C2.8 3.2 4.8 2 7 2s4.2 1.2 6 3.5" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`;
-    const batterySVG = `<svg width="22" height="11" viewBox="0 0 22 11"><rect x="0" y="0" width="19" height="11" rx="2.5" stroke="#fff" stroke-width="1.2" fill="none"/><rect x="2" y="2" width="13" height="7" rx="1" fill="#fff"/><rect x="20" y="3.5" width="2" height="4" rx="1" fill="rgba(255,255,255,0.4)"/></svg>`;
+    const signalSVG = `<svg width="17" height="12" viewBox="0 0 17 12"><rect x="0" y="8" width="3" height="4" rx="0.7" fill="#fff"/><rect x="4.5" y="5" width="3" height="7" rx="0.7" fill="#fff"/><rect x="9" y="2" width="3" height="10" rx="0.7" fill="#fff"/><rect x="13.5" y="0" width="3" height="12" rx="0.7" fill="#fff" opacity="0.35"/></svg>`;
+    const wifiSVG = `<svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11a1.2 1.2 0 100 2.4A1.2 1.2 0 008 11z" fill="#fff"/><path d="M4.5 8.5C5.6 7.3 6.7 6.7 8 6.7s2.4.6 3.5 1.8" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M1.5 5.5C3.3 3.3 5.5 2.2 8 2.2s4.7 1.1 6.5 3.3" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>`;
+    const batterySVG = `<svg width="25" height="12" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="20" height="11" rx="2.5" stroke="#fff" stroke-opacity="0.35" stroke-width="1" fill="none"/><rect x="22" y="3.5" width="2" height="5" rx="1" fill="#fff" opacity="0.4"/><rect x="2" y="2" width="14" height="8" rx="1.5" fill="#fff"/></svg>`;
     return `
     <div class="status-bar">
         <div class="sb-time">${time}</div>
@@ -1672,26 +1679,22 @@ function buildMockupHTML(logoImg, logoName, device) {
     const dockApps = isSamsung ? DOCK_APPS_SAMSUNG : DOCK_APPS_IPHONE;
     const dockClass = isSamsung ? 'dock-bar samsung-dock' : 'dock-bar';
 
-    // Build grid apps (8 real apps + Cotidie + 3 more)
+    // Grid: 8 apps + Cotidie + 3 more = 12 total (3 rows)
     let gridHTML = '';
     REAL_APPS.slice(0, 8).forEach(app => {
         gridHTML += `<div class="app-slot">${appIcon(app, isSamsung)}<div class="app-lbl">${app.name}</div></div>`;
     });
-    // Cotidie in prominent position
     gridHTML += `
         <div class="app-slot cotidie-highlight">
-            <img src="${logoImg}" class="app-ico" style="${isSamsung ? 'border-radius:16px;' : 'border-radius:13px;'} background:#1A1816;">
+            <img src="${logoImg}" class="app-ico" style="border-radius:${isSamsung?'16':'13'}px; background:#1A1816;">
             <div class="app-lbl">Cotidie</div>
         </div>`;
     REAL_APPS.slice(8).forEach(app => {
         gridHTML += `<div class="app-slot">${appIcon(app, isSamsung)}<div class="app-lbl">${app.name}</div></div>`;
     });
 
-    // Dock
     let dockHTML = '';
-    dockApps.forEach(app => {
-        dockHTML += appIcon(app, isSamsung);
-    });
+    dockApps.forEach(app => { dockHTML += appIcon(app, isSamsung); });
 
     return `
     <div class="mockup-modal active" id="mockupModal" onclick="if(event.target===this) closeMockupModal()">
