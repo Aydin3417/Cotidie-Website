@@ -814,7 +814,10 @@
     <div class="page" id="galleryPage">
         <div class="section-title-bar">
             <h2>Logo <em>Galerisi</em></h2>
-            <div class="filter-pills" id="filterPills"></div>
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <input type="text" id="logoSearchInput" class="login-input" style="padding: 8px 16px; width: 220px; font-size: 0.85rem;" placeholder="Logo ID veya isim ara..." oninput="renderGallery()">
+                <div class="filter-pills" id="filterPills"></div>
+            </div>
         </div>
         <div class="gallery-grid" id="galleryGrid"></div>
     </div>
@@ -1133,7 +1136,11 @@ function renderGallery() {
         p.addEventListener('click', () => { currentFilter = p.dataset.cat; renderGallery(); });
     });
 
-    const filtered = currentFilter === 'all' ? LOGOS : LOGOS.filter(l => l.category === currentFilter);
+    const searchQuery = (document.getElementById('logoSearchInput')?.value || '').toLowerCase();
+    let filtered = currentFilter === 'all' ? LOGOS : LOGOS.filter(l => l.category === currentFilter);
+    if (searchQuery) {
+        filtered = filtered.filter(l => l.id.toLowerCase().includes(searchQuery) || l.name.toLowerCase().includes(searchQuery));
+    }
     const store = getStore();
     const grid = document.getElementById('galleryGrid');
 
