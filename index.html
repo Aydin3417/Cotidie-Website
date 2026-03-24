@@ -943,7 +943,7 @@ function applyTranslations() {
     const btn = document.getElementById('langToggleBtn'); if (btn) btn.innerHTML = currentLang === 'tr' ? '🌐 EN' : '🌐 TR';
     if (currentUser) {
         const nu = document.getElementById('navUser');
-        if (nu) nu.innerHTML = t('welcome') + \`, <strong>\${currentUser}</strong>\`;
+        if (nu) nu.innerHTML = `${t('welcome')}, <strong>${currentUser}</strong>`;
     }
 }
 
@@ -1147,7 +1147,7 @@ async function doLogin() {
     localStorage.setItem('cotidie_arena_username', name);
     await dbInsertUser(name);
     await loadAllData();
-    document.getElementById('navUser').innerHTML = `Hoş geldin, <strong>${name}</strong>`;
+    document.getElementById('navUser').innerHTML = `${t('welcome')}, <strong>${name}</strong>`;
     document.getElementById('nav').style.display = 'flex';
     currentPage = '';
     switchPage('gallery');
