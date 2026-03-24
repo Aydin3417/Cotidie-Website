@@ -1716,21 +1716,6 @@ function renderSwipeStats() {
         return { ...logo, likes, dislikes, total, likeRate, myVote };
     }).sort((a, b) => b.likeRate - a.likeRate || b.likes - a.likes);
 
-    // Per-user breakdown
-    const userRows = Object.entries(userSwipeCounts)
-        .sort((a, b) => b[1] - a[1])
-        .map(([name, count]) => {
-            let uLikes = 0;
-            Object.values(store.swipes || {}).forEach(d => { if (d.right.includes(name)) uLikes++; });
-            const pct = count > 0 ? Math.round(uLikes / count * 100) : 0;
-            return `<tr>
-                <td style="color:var(--primary); font-weight:500;">${name}</td>
-                <td>${count} / ${LOGOS.length}</td>
-                <td>💚 ${uLikes} · ✕ ${count - uLikes}</td>
-                <td style="color:var(--green);">${pct}%</td>
-            </tr>`;
-        }).join('');
-
     content.innerHTML = `
         <div class="stats-grid">
             <div class="stat-card">
@@ -1774,12 +1759,6 @@ function renderSwipeStats() {
                 </div>`;
             }).join('')}
         </div>
-
-        <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; margin:40px 0 16px;">Kullanıcı <em style="color:var(--primary);font-style:normal;">Bazlı Swipe</em></h3>
-        <table class="history-table">
-            <thead><tr><th>Kullanıcı</th><th>İlerleme</th><th>Sonuç</th><th>Beğeni %</th></tr></thead>
-            <tbody>${userRows || '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Henüz swipe yok</td></tr>'}</tbody>
-        </table>
 
         ${myRemaining > 0 ? `<div class="btn-group" style="margin-top:32px;"><button class="start-btn" onclick="switchPage('swipe')">🔥 Swipe Etmeye Devam (${myRemaining} kaldı)</button></div>` : ''}
     `;
