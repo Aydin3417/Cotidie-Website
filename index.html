@@ -163,6 +163,22 @@
             border: 1px solid rgba(212,175,55,0.3);
             backdrop-filter: blur(8px);
         }
+        .gallery-card-id {
+            position: absolute; top: 12px; left: 12px;
+            padding: 4px 10px; border-radius: 100px;
+            font-size: 0.6rem; font-weight: 700;
+            background: rgba(13,11,10,0.7); color: var(--primary);
+            border: 1px solid rgba(232,168,124,0.25);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            cursor: pointer; transition: all 0.2s;
+            font-family: 'Inter', sans-serif; letter-spacing: 0.05em;
+            z-index: 2;
+        }
+        .gallery-card-id:hover {
+            background: rgba(232,168,124,0.2); color: var(--gold);
+            border-color: rgba(232,168,124,0.5);
+            transform: scale(1.05);
+        }
 
         /* STARS */
         .stars { display: flex; gap: 4px; }
@@ -787,6 +803,133 @@
         .login-lang-btn:hover { background: rgba(255, 255, 255, 0.1); color: var(--text); }
         .login-lang-btn.active { background: rgba(212, 175, 55, 0.2); border-color: var(--gold); color: var(--gold); }
 
+        /* AI STUDIO */
+        .ai-hero { text-align: center; margin-bottom: 40px; position: relative; }
+        .ai-hero::before {
+            content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+            width: 600px; height: 400px;
+            background: radial-gradient(circle, rgba(133,183,157,0.12), rgba(232,168,124,0.06), transparent 70%);
+            pointer-events: none;
+        }
+        .ai-hero-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--secondary);
+            background: rgba(133,183,157,0.1); border: 1px solid rgba(133,183,157,0.2);
+            padding: 6px 16px; border-radius: 100px; margin-bottom: 16px;
+        }
+        .ai-hero h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem; font-weight: 400; margin-bottom: 8px;
+        }
+        .ai-hero h2 em { font-style: normal; color: var(--secondary); font-weight: 600; }
+        .ai-hero p { color: var(--text-muted); font-size: 0.9rem; max-width: 600px; margin: 0 auto; }
+
+        .ai-section-label {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--secondary); margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .ai-section-label::after {
+            content: ''; flex: 1; height: 1px; background: rgba(133,183,157,0.2);
+        }
+
+        .ai-top5-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 40px;
+        }
+        .ai-top5-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 20px; overflow: hidden; position: relative;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .ai-top5-card:hover { transform: translateY(-4px); border-color: var(--border2); }
+        .ai-top5-card img {
+            width: 100%; aspect-ratio: 1; object-fit: cover; display: block;
+        }
+        .ai-top5-card-info { padding: 10px 12px; }
+        .ai-top5-card-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem; font-weight: 500; white-space: nowrap;
+            overflow: hidden; text-overflow: ellipsis;
+        }
+        .ai-top5-card-stats { font-size: 0.65rem; color: var(--text-muted); margin-top: 2px; }
+        .ai-top5-rank {
+            position: absolute; top: 8px; left: 8px;
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; font-weight: 700;
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        }
+        .ai-top5-rank.r1 { background: rgba(212,175,55,0.3); color: var(--gold); border: 1px solid rgba(212,175,55,0.4); }
+        .ai-top5-rank.r2 { background: rgba(192,192,192,0.2); color: #C0C0C0; border: 1px solid rgba(192,192,192,0.3); }
+        .ai-top5-rank.r3 { background: rgba(205,127,50,0.2); color: #CD7F32; border: 1px solid rgba(205,127,50,0.3); }
+        .ai-top5-rank.r4, .ai-top5-rank.r5 { background: rgba(255,255,255,0.08); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
+
+        .ai-analysis-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 40px;
+        }
+        .ai-analysis-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 20px; text-align: center;
+        }
+        .ai-analysis-emoji { font-size: 1.8rem; margin-bottom: 8px; }
+        .ai-analysis-title {
+            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--secondary); margin-bottom: 6px;
+        }
+        .ai-analysis-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem; color: var(--text); font-weight: 500;
+        }
+
+        .ai-result-container {
+            display: flex; gap: 32px; align-items: flex-start; margin-bottom: 40px;
+        }
+        .ai-result-img-wrap {
+            flex-shrink: 0; width: 320px; position: relative;
+        }
+        .ai-result-img-wrap img {
+            width: 100%; border-radius: 28px;
+            border: 2px solid rgba(133,183,157,0.3);
+            box-shadow: 0 20px 60px rgba(133,183,157,0.15);
+            display: block;
+        }
+        .ai-result-badge {
+            position: absolute; top: -10px; right: -10px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: #fff; font-size: 0.65rem; font-weight: 700;
+            padding: 6px 14px; border-radius: 100px;
+            letter-spacing: 0.08em; box-shadow: 0 4px 16px rgba(133,183,157,0.4);
+        }
+        .ai-result-details { flex: 1; }
+        .ai-result-details h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem; font-weight: 500; color: var(--text); margin-bottom: 12px;
+        }
+        .ai-result-details h3 em { font-style: normal; color: var(--secondary); }
+        .ai-result-details p {
+            color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 16px;
+        }
+        .ai-trait-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+        .ai-trait-tag {
+            padding: 5px 12px; border-radius: 100px;
+            font-size: 0.7rem; font-weight: 600;
+            background: rgba(133,183,157,0.1); border: 1px solid rgba(133,183,157,0.2);
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .ai-top5-grid { grid-template-columns: repeat(3, 1fr); }
+            .ai-analysis-grid { grid-template-columns: 1fr 1fr; }
+            .ai-result-container { flex-direction: column; gap: 20px; }
+            .ai-result-img-wrap { width: 100%; max-width: 300px; margin: 0 auto; }
+            .ai-hero h2 { font-size: 1.6rem; }
+        }
+        @media (max-width: 380px) {
+            .ai-top5-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .ai-analysis-grid { grid-template-columns: 1fr; }
+        }
+
     </style>
     <!-- CANVAS CONFETTI -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -804,6 +947,7 @@
         <button class="nav-tab" data-page="tournament" data-i18n="nav_tournament">Turnuva</button>
         <button class="nav-tab" data-page="stats" data-i18n="nav_stats">İstatistikler</button>
         <button class="nav-tab" data-page="leaderboard" data-i18n="nav_leaderboard">🏆 Sıralama</button>
+        <button class="nav-tab" data-page="aiStudio" data-i18n="nav_aiStudio">🤖 AI Stüdyo</button>
         <button class="nav-tab" id="logoutBtn" style="margin-left:auto; color:var(--text-muted); font-size:0.75rem; border-color:rgba(255,255,255,0.1);" onclick="doLogout()" data-i18n="nav_logout">🚪 Çıkış</button>
     </div>
     <div class="nav-user" id="navUser"></div>
@@ -872,6 +1016,11 @@
         </div>
         <div id="leaderboardContent"></div>
     </div>
+
+    <!-- AI STUDIO PAGE -->
+    <div class="page" id="aiStudioPage">
+        <div id="aiStudioContent"></div>
+    </div>
 </div>
 
 <!-- COMMENT MODAL -->
@@ -907,11 +1056,11 @@
 // ===================== I18N CONFIG =====================
 const I18N = {
     tr: {
-        nav_gallery: "Galeri", nav_swipe: "🔥 Swipe", nav_swipeStats: "📊 Swipe Sonuçları", nav_tournament: "Turnuva", nav_stats: "İstatistikler", nav_leaderboard: "🏆 Sıralama", nav_logout: "🚪 Çıkış",
+        nav_gallery: "Galeri", nav_swipe: "🔥 Swipe", nav_swipeStats: "📊 Swipe Sonuçları", nav_tournament: "Turnuva", nav_stats: "İstatistikler", nav_leaderboard: "🏆 Sıralama", nav_aiStudio: "🤖 AI Stüdyo", nav_logout: "🚪 Çıkış",
         login_title: "Cotidie Logo <em>Arena</em>", login_desc: "Logoları değerlendirin, turnuvada yarıştırın, favorinizi belirleyin. Başlamak için adınızı girin.", login_placeholder: "Adınızı yazın...", login_btn: "Arena'ya Gir →",
         btn_loading: "Yükleniyor...", welcome: "Hoş geldin", title_gallery: "Logo <em>Galerisi</em>", title_swipe_stats: "📊 Swipe <em>Sonuçları</em>", title_stats: "İstatistikler & <em>Sıralama</em>", title_leader: "🏆 En <em>Beğenilenler</em>",
         cat_all: "Tümü", cat_lettermark: "Harf / Lettermark", cat_icon: "İkon / Sembol", cat_abstract: "Soyut / Abstract", cat_full: "Tam Logo",
-        src_pro: "★ PRO", src_ai: "AI", src_user: "KULLANICI", search_ph: "Logo ID veya isim ara...",
+        src_pro: "★ PRO", src_ai: "AI", src_user: "KULLANICI", src_ai_enhanced: "✨ AI ENHANCED", search_ph: "Logo ID veya isim ara...",
         avg: "Ort", votes: "oy", wins: "G", losses: "M",
         comments_btn: "💬 Yorumlar", mockup_btn: "📱 Ekranda Gör",
         tourney_title: "Logo <em>Turnuvası</em>", tourney_desc: "uwufufu tarzı 1v1 eşleşmelerle tüm logolar arasından favorini belirle!<br>Her turda iki logo karşılaşır — beğendiğini seç, elemeler sonunda şampiyonunu bul.", tourney_start16: "🏆 16'lı Turnuva Başlat", tourney_start8: "⚡ 8'li Hızlı Turnuva", tourney_history: "Geçmiş Turnuvalar", th_date: "Tarih", th_type: "Tür", th_champ: "Şampiyon", th_finalist: "Finalist",
@@ -923,14 +1072,15 @@ const I18N = {
         cm_comments: "Yorumlar", cm_first: "İlk yorumu sen yaz! ✍️", cm_ph: "Bu logo hakkında ne düşünüyorsun?", cm_send: "Yorum Yap", cm_sending: "Gönderiliyor...",
         nav_login_warn: "Lütfen adınızı girin.", avg_rating_modal: "Ortalama: <strong>{0}</strong> ({1} oy) · Toplam Turnuva Bilanço: {2}G / {3}M", rank_no_match: "Maç yok", rank_no_swipe: "Henüz swipe yok", rank_no_swipe_you: "Swipe etmedin",
         cat: "Kategori:", src: "Kaynak:",
-        alert_copy: "Logo ID kopyalandı!", alert_login: "Lütfen önce adınızı girin"
+        alert_copy: "Logo ID kopyalandı!", alert_login: "Lütfen önce adınızı girin",
+        ai_tag: "🤖 YAPAY ZEKA ANALİZİ", ai_title: "AI <em>Stüdyo</em>", ai_desc: "Swipe sonuçlarından en beğenilen 5 logoyu analiz ederek yapay zeka ile yeni bir logo üretildi.", ai_top5_label: "TOP 5 — EN BEĞENİLENLER", ai_analysis_label: "AI ANALİZ — ORTAK GÜÇLÜ YÖNLER", ai_result_label: "AI ÜRETİMİ — YENİ LOGO", ai_result_name: "AI Enhanced <em>Champion</em>", ai_result_desc: "Top 5 logonun güçlü yönleri yapay zeka tarafından analiz edildi ve tek bir üstün logoda birleştirildi. 3D sıvı ipek C harfi + kalem nib geçişi + parmak izi dokusu — premium, organik, zamansız.", ai_like_pct: "beğeni", ai_no_data: "Henüz yeterli swipe verisi yok. Logoları swipe etmeye başlayın!", ai_go_swipe: "🔥 Swipe Etmeye Git", ai_cat_dominant: "Baskın Kategori", ai_src_dominant: "Baskın Kaynak", ai_avg_like: "Ort. Beğeni", ai_common_trait: "Ortak Özellik", ai_color_pref: "Renk Tercihi", ai_style_pref: "Stil Tercihi"
     },
     en: {
-        nav_gallery: "Gallery", nav_swipe: "🔥 Swipe", nav_swipeStats: "📊 Swipe Stats", nav_tournament: "Tournament", nav_stats: "Statistics", nav_leaderboard: "🏆 Leaderboard", nav_logout: "🚪 Logout",
+        nav_gallery: "Gallery", nav_swipe: "🔥 Swipe", nav_swipeStats: "📊 Swipe Stats", nav_tournament: "Tournament", nav_stats: "Statistics", nav_leaderboard: "🏆 Leaderboard", nav_aiStudio: "🤖 AI Studio", nav_logout: "🚪 Logout",
         login_title: "Cotidie Logo <em>Arena</em>", login_desc: "Rate logos, compete in tournaments, pick your favorites. Enter your name.", login_placeholder: "Enter your name...", login_btn: "Enter Arena →",
         btn_loading: "Loading...", welcome: "Welcome", title_gallery: "Logo <em>Gallery</em>", title_swipe_stats: "📊 Swipe <em>Stats</em>", title_stats: "Stats & <em>Rankings</em>", title_leader: "🏆 Top <em>Rated</em>",
         cat_all: "All", cat_lettermark: "Lettermark", cat_icon: "Icon", cat_abstract: "Abstract", cat_full: "Full Logo",
-        src_pro: "★ PRO", src_ai: "AI", src_user: "USER", search_ph: "Search ID or name...",
+        src_pro: "★ PRO", src_ai: "AI", src_user: "USER", src_ai_enhanced: "✨ AI ENHANCED", search_ph: "Search ID or name...",
         avg: "Avg", votes: "votes", wins: "W", losses: "L",
         comments_btn: "💬 Comments", mockup_btn: "📱 On Device",
         tourney_title: "Logo <em>Tournament</em>", tourney_desc: "Pick your favorite logos through 1v1 matchups!<br>Two logos clash each round — pick the one you like.", tourney_start16: "🏆 Start 16-Logo Tourney", tourney_start8: "⚡ Start 8-Logo Tourney", tourney_history: "Past Tourneys", th_date: "Date", th_type: "Type", th_champ: "Champion", th_finalist: "Finalist",
@@ -942,7 +1092,8 @@ const I18N = {
         cm_comments: "Comments", cm_first: "Write the first comment! ✍️", cm_ph: "Thoughts on this logo?", cm_send: "Comment", cm_sending: "Sending...",
         nav_login_warn: "Please enter your name.", avg_rating_modal: "Average: <strong>{0}</strong> ({1} votes) · Tournaments: {2}W / {3}L", rank_no_match: "No match", rank_no_swipe: "No swipes yet", rank_no_swipe_you: "Not swiped",
         cat: "Category:", src: "Source:",
-        alert_copy: "Logo ID copied!", alert_login: "Please enter your name first"
+        alert_copy: "Logo ID copied!", alert_login: "Please enter your name first",
+        ai_tag: "🤖 AI ANALYSIS", ai_title: "AI <em>Studio</em>", ai_desc: "Analyzed the top 5 most-liked logos from swipe results and generated a new logo with AI.", ai_top5_label: "TOP 5 — MOST LIKED", ai_analysis_label: "AI ANALYSIS — COMMON STRENGTHS", ai_result_label: "AI GENERATED — NEW LOGO", ai_result_name: "AI Enhanced <em>Champion</em>", ai_result_desc: "The top 5 logos' strongest traits were analyzed by AI and combined into one superior logo. 3D liquid silk C letter + quill nib transition + fingerprint texture — premium, organic, timeless.", ai_like_pct: "likes", ai_no_data: "Not enough swipe data yet. Start swiping logos!", ai_go_swipe: "🔥 Go Swipe", ai_cat_dominant: "Dominant Category", ai_src_dominant: "Dominant Source", ai_avg_like: "Avg. Like Rate", ai_common_trait: "Common Trait", ai_color_pref: "Color Preference", ai_style_pref: "Style Preference"
     }
 };
 
@@ -979,6 +1130,7 @@ function setLanguage(lang) {
     const cw = document.getElementById('swipeContent'); if(cw && cw.innerHTML.trim() !== '') renderSwipeCard();
     const cs_stats = document.getElementById('swipeStatsContent'); if(cs_stats && cs_stats.innerHTML.trim() !== '') renderSwipeStats();
     const cl = document.getElementById('leaderboardContent'); if(cl && cl.innerHTML.trim() !== '') renderLeaderboard();
+    const ca = document.getElementById('aiStudioContent'); if(ca && ca.innerHTML.trim() !== '') renderAiStudio();
 }
 
 window.addEventListener('DOMContentLoaded', () => { setTimeout(applyTranslations, 100); });
@@ -1035,6 +1187,7 @@ const LOGOS = [
     { id: 'u19', name: '3D Ribbon C', category: 'lettermark', source: 'user', img: 'assets/images/user_logo_19.png' },
     { id: 'u20', name: 'Living Liquid Nib', category: 'icon', source: 'user', img: 'assets/images/user_logo_20.png' },
     { id: 'u21', name: 'Morning Cotidie', category: 'full_logo', source: 'user', img: 'assets/images/user_logo_21.png' },
+    { id: 'u22', name: 'Gold Quill Book C', category: 'icon', source: 'user', img: 'assets/images/user_gold_quill_book_c.png' },
     // EXTRA LOGOS
     { id: 'ex1', name: 'Dark Elegance', category: 'full_logo', source: 'ai', img: 'assets/images/cotidie_logo_dark_1774094717816.png' },
     { id: 'ex2', name: 'Gold Prestige V2', category: 'full_logo', source: 'ai', img: 'assets/images/cotidie_logo_gold_v2_1774096083271.png' },
@@ -1051,6 +1204,9 @@ const LOGOS = [
     // ADDITIONAL AI LOGOS
     { id: 'new_ex5', name: 'Elegant Dark Quill', category: 'icon', source: 'ai', img: 'assets/images/cotidie_quill_elegant_dark.png' },
     { id: 'new_ex6', name: 'Terracotta Marble C', category: 'lettermark', source: 'ai', img: 'assets/images/cotidie_marble_ceramic.png' },
+    // AI ENHANCED
+    { id: 'ai_champ1', name: 'AI Enhanced Champion', category: 'lettermark', source: 'ai_enhanced', img: 'assets/images/ai_enhanced_champion.png' },
+    { id: 'ai_champ2', name: 'AI Ultimate — Lotus Spiral', category: 'lettermark', source: 'ai_enhanced', img: 'assets/images/ai_ultimate_champion.png' },
 ];
 
 const CATEGORIES = {
@@ -1064,7 +1220,8 @@ const CATEGORIES = {
 const SOURCES = { 
     get pro() { return t('src_pro'); }, 
     get ai() { return t('src_ai'); }, 
-    get user() { return t('src_user'); } 
+    get user() { return t('src_user'); },
+    get ai_enhanced() { return t('src_ai_enhanced'); }
 };
 
 // ===================== SUPABASE CONFIG =====================
@@ -1223,6 +1380,7 @@ function executeSwitch(page) {
     if (page === 'tournament') renderTournamentMenu();
     if (page === 'stats') { loadAllData().then(() => renderStats()); }
     if (page === 'leaderboard') { loadAllData().then(() => renderLeaderboard()); }
+    if (page === 'aiStudio') { loadAllData().then(() => renderAiStudio()); }
 }
 
 function doLogout() {
@@ -1264,6 +1422,7 @@ function renderGallery() {
 
         return `
         <div class="gallery-card" data-id="${logo.id}">
+            <div class="gallery-card-id" onclick="event.stopPropagation(); navigator.clipboard.writeText('${logo.id}'); this.textContent='✓ Copied!'; setTimeout(()=>this.textContent='${logo.id}',1200);" title="ID: ${logo.id}">${logo.id}</div>
             ${logo.source === 'pro' ? `<div class="gallery-card-badge">${t('src_pro')}</div>` : ''}
             <img src="${logo.img}" alt="${logo.name}" loading="lazy" onclick="openCommentModal('${logo.id}')" style="cursor:pointer;">
             <div class="gallery-card-info">
@@ -1928,6 +2087,152 @@ function renderLeaderboard() {
         </div>
     `;
 }
+
+// ===================== AI STUDIO =====================
+function renderAiStudio() {
+    const store = getStore();
+    const content = document.getElementById('aiStudioContent');
+
+    // Calculate top 5 by swipe like rate (min 1 swipe)
+    const ranked = LOGOS.filter(l => l.source !== 'ai_enhanced').map(logo => {
+        const sd = store.swipes?.[logo.id] || { right: [], left: [] };
+        const likes = sd.right.length;
+        const dislikes = sd.left.length;
+        const total = likes + dislikes;
+        const likeRate = total > 0 ? (likes / total * 100) : 0;
+        return { ...logo, likes, dislikes, total, likeRate };
+    }).filter(l => l.total > 0).sort((a, b) => b.likeRate - a.likeRate || b.likes - a.likes);
+
+    const top5 = ranked.slice(0, 5);
+
+    // Not enough data
+    if (top5.length < 3) {
+        content.innerHTML = `
+            <div class="ai-hero">
+                <span class="ai-hero-tag">${t('ai_tag')}</span>
+                <h2>${t('ai_title')}</h2>
+                <p style="margin-top:20px;">${t('ai_no_data')}</p>
+                <div class="btn-group" style="margin-top:24px;">
+                    <button class="start-btn" onclick="switchPage('swipe')">${t('ai_go_swipe')}</button>
+                </div>
+            </div>`;
+        return;
+    }
+
+    // Analyze common traits
+    const catCounts = {};
+    const srcCounts = {};
+    top5.forEach(l => {
+        catCounts[l.category] = (catCounts[l.category] || 0) + 1;
+        srcCounts[l.source] = (srcCounts[l.source] || 0) + 1;
+    });
+    const dominantCat = Object.entries(catCounts).sort((a, b) => b[1] - a[1])[0];
+    const dominantSrc = Object.entries(srcCounts).sort((a, b) => b[1] - a[1])[0];
+    const avgLikeRate = (top5.reduce((s, l) => s + l.likeRate, 0) / top5.length).toFixed(0);
+
+    // Detect color/style preferences from names
+    const allNames = top5.map(l => l.name.toLowerCase()).join(' ');
+    let colorPref = 'Terracotta & Gold';
+    if (allNames.includes('sage') || allNames.includes('green')) colorPref = 'Sage & Terracotta';
+    if (allNames.includes('gold') || allNames.includes('golden')) colorPref = 'Gold & Terracotta';
+    if (allNames.includes('liquid') || allNames.includes('gradient')) colorPref = 'Multi-Gradient';
+
+    let stylePref = '3D Premium';
+    if (allNames.includes('minimal') || allNames.includes('clean')) stylePref = 'Minimalist';
+    if (allNames.includes('brush') || allNames.includes('calligraphy')) stylePref = 'Organic Brushwork';
+    if (allNames.includes('liquid') || allNames.includes('silk')) stylePref = 'Liquid / Flowing';
+
+    let commonTrait = 'C Harfi Formu';
+    const hasC = top5.filter(l => l.category === 'lettermark').length;
+    const hasIcon = top5.filter(l => l.category === 'icon').length;
+    if (hasIcon > hasC) commonTrait = currentLang === 'tr' ? 'İkon / Sembol' : 'Icon / Symbol';
+    if (hasC >= 2) commonTrait = currentLang === 'tr' ? 'C Harfi Formu' : 'C Letter Form';
+
+    const aiLogo = LOGOS.find(l => l.id === 'ai_champ2');
+
+    // Top 5 cards
+    const top5HTML = top5.map((logo, i) => {
+        const rankClass = i < 3 ? `r${i + 1}` : (i < 5 ? `r${i + 1}` : '');
+        return `
+        <div class="ai-top5-card">
+            <div class="ai-top5-rank ${rankClass}">${i + 1}</div>
+            <img src="${logo.img}" alt="${logo.name}" loading="lazy">
+            <div class="ai-top5-card-info">
+                <div class="ai-top5-card-name">${logo.name}</div>
+                <div class="ai-top5-card-stats">💚 %${logo.likeRate.toFixed(0)} ${t('ai_like_pct')} · ${logo.likes}/${logo.total}</div>
+            </div>
+        </div>`;
+    }).join('');
+
+    content.innerHTML = `
+        <div class="ai-hero">
+            <span class="ai-hero-tag">${t('ai_tag')}</span>
+            <h2>${t('ai_title')}</h2>
+            <p>${t('ai_desc')}</p>
+        </div>
+
+        <div class="ai-section-label">${t('ai_top5_label')}</div>
+        <div class="ai-top5-grid">${top5HTML}</div>
+
+        <div class="ai-section-label">${t('ai_analysis_label')}</div>
+        <div class="ai-analysis-grid">
+            <div class="ai-analysis-card">
+                <div class="ai-analysis-emoji">📊</div>
+                <div class="ai-analysis-title">${t('ai_cat_dominant')}</div>
+                <div class="ai-analysis-value">${CATEGORIES[dominantCat[0]] || dominantCat[0]}</div>
+            </div>
+            <div class="ai-analysis-card">
+                <div class="ai-analysis-emoji">🏷️</div>
+                <div class="ai-analysis-title">${t('ai_src_dominant')}</div>
+                <div class="ai-analysis-value">${SOURCES[dominantSrc[0]] || dominantSrc[0]}</div>
+            </div>
+            <div class="ai-analysis-card">
+                <div class="ai-analysis-emoji">💚</div>
+                <div class="ai-analysis-title">${t('ai_avg_like')}</div>
+                <div class="ai-analysis-value">%${avgLikeRate}</div>
+            </div>
+            <div class="ai-analysis-card">
+                <div class="ai-analysis-emoji">🧬</div>
+                <div class="ai-analysis-title">${t('ai_common_trait')}</div>
+                <div class="ai-analysis-value">${commonTrait}</div>
+            </div>
+            <div class="ai-analysis-card">
+                <div class="ai-analysis-emoji">🎨</div>
+                <div class="ai-analysis-title">${t('ai_color_pref')}</div>
+                <div class="ai-analysis-value">${colorPref}</div>
+            </div>
+            <div class="ai-analysis-card">
+                <div class="ai-analysis-emoji">✨</div>
+                <div class="ai-analysis-title">${t('ai_style_pref')}</div>
+                <div class="ai-analysis-value">${stylePref}</div>
+            </div>
+        </div>
+
+        <div class="ai-section-label">${t('ai_result_label')}</div>
+        <div class="ai-result-container">
+            <div class="ai-result-img-wrap">
+                <img src="${aiLogo.img}" alt="${aiLogo.name}">
+                <div class="ai-result-badge">✨ AI ULTIMATE</div>
+            </div>
+            <div class="ai-result-details">
+                <h3>${t('ai_result_name')}</h3>
+                <p>En popüler 5 logonun analiz edilmesiyle oluşturulan bu "Ultimate" tasarım; organik Lotus yapraklarının zarafetini, hipnotize edici Spiral enerjisini ve 3D sıvı İpek dokusunu tek bir harika "C" formunda birleştiriyor. Merkezdeki yeşil inci, yepyeni bir hikayenin başlangıcına işaret ediyor.</p>
+                <div class="ai-trait-tags">
+                    <span class="ai-trait-tag">🌸 Organic Lotus Structure</span>
+                    <span class="ai-trait-tag">🌀 Magnetic Spiral Energy</span>
+                    <span class="ai-trait-tag">🎨 Terracotta → Rose Gold Gradient</span>
+                    <span class="ai-trait-tag">💎 Glowing Sage Green Orb</span>
+                    <span class="ai-trait-tag">✨ Hyper-realistic 3D Silk Render</span>
+                </div>
+                <div class="btn-group" style="justify-content: flex-start;">
+                    <button class="start-btn" onclick="openCommentModal('ai_champ2')">${t('comments_btn')}</button>
+                    <button class="start-btn secondary" onclick="openMockupModal('ai_champ2')">${t('mockup_btn')}</button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
 // ===================== DEVICE MOCKUP PREVIEW =====================
 let mockupDevice = 'iphone';
 
